@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+
+model/model.pkl
+model/encoders.pkl
+
+.ipynb_checkpoints/
+.DS_Store
