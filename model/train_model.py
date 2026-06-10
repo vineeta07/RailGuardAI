@@ -61,7 +61,7 @@ encoders = {}
 for col in categorical_cols:
     encoder = LabelEncoder()
 
-    merged[col] = encoder.fit_transform(
+    merged[col] = encoder.fit_transform( # type: ignore
         merged[col].astype(str)
     )
 
@@ -112,7 +112,7 @@ preds = model.predict(X_test)
 mae = mean_absolute_error(y_test, preds)
 r2 = r2_score(y_test, preds)
 
-    print("\nModel Performance")
+print("\nModel Performance")
 print(f"MAE : {mae:.2f}")
 print(f"R2  : {r2:.4f}")
 

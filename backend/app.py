@@ -11,6 +11,7 @@ PROJECT_ROOT = os.path.abspath(
 sys.path.append(PROJECT_ROOT)
 
 from model.predict import predict_allocation
+from model.predict_health import predict_health
 
 app = FastAPI(
     title="RailGuard AI Prediction API",
@@ -89,6 +90,68 @@ def predict(req: AllocationRequest):
             status_code=500,
             detail=str(e)
         )
+
+# MODULE 3 – ROLLING STOCK HEALTH MONITORING
+
+class HealthRequest(BaseModel):
+    vibration_rms: float = Field(
+        ...,
+        description="RMS vibration reading"
+    )
+
+    temperature: float = Field(
+        ...,
+        description="Sensor temperature in °C"
+    )
+
+    sound_level: float = Field(
+        ...,
+        description="Sound level in dB"
+    )
+
+    maintenance_days: int = Field(
+        ...,
+        ge=0,
+        description="Days since last maintenance"
+    )
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "vibration_rms": 0.35,
+                "temperature": 55,
+                "sound_level": 60,
+                "maintenance_days": 30
+            }
+        }
+    }
+
+
+@app.post("/predict-health")
+def predict_health_endpoint(req: HealthRequest):
+    """
+    Predict wheel & bearing health, rake health score,
+    failure probability, and overall status from sensor data.
+    """
+
+    try:
+
+        result = predict_health(
+            vibration_rms=req.vibration_rms,
+            temperature=req.temperature,
+            sound_level=req.sound_level,
+            maintenance_days=req.maintenance_days,
+        )
+
+        return result
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
 
 if __name__ == "__main__":
     uvicorn.run(
