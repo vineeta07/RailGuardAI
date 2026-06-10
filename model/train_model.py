@@ -112,7 +112,7 @@ preds = model.predict(X_test)
 mae = mean_absolute_error(y_test, preds)
 r2 = r2_score(y_test, preds)
 
-print("\n========== MODEL PERFORMANCE ==========")
+    print("\nModel Performance")
 print(f"MAE : {mae:.2f}")
 print(f"R²  : {r2:.4f}")
 
