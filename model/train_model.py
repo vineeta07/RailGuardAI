@@ -114,7 +114,7 @@ r2 = r2_score(y_test, preds)
 
     print("\nModel Performance")
 print(f"MAE : {mae:.2f}")
-print(f"R²  : {r2:.4f}")
+print(f"R2  : {r2:.4f}")
 
 joblib.dump(model, MODEL_PATH)
 
