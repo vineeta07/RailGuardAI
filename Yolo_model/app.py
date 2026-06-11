@@ -9,7 +9,7 @@ from alert_system import AlertSystem
 # ==========================
 
 MODEL_PATH = "yolo11n.pt"
-VIDEO_SOURCE = 0
+VIDEO_SOURCE = 0 #Laptop Webcam
 CONFIDENCE_THRESHOLD = 0.5
 
 # ==========================
