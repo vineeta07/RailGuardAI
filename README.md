@@ -1,4 +1,4 @@
-# 🚆 RailGuard AI
+# RailGuard AI
 ### AI-Powered Railway Safety, Predictive Maintenance & Operational Intelligence Platform
 
 RailGuard AI is an intelligent railway monitoring and decision-support platform that combines Machine Learning, Computer Vision, IoT, and Real-Time Analytics to improve railway safety, optimize freight operations, and enable predictive maintenance.
