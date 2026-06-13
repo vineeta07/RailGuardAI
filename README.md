@@ -1,14 +1,15 @@
 # RailGuard AI
+
 ### AI-Powered Railway Safety, Predictive Maintenance & Operational Intelligence Platform
 
 RailGuard AI is an intelligent railway monitoring and decision-support platform that combines Machine Learning, Computer Vision, IoT, and Real-Time Analytics to improve railway safety, optimize freight operations, and enable predictive maintenance.
 
 The platform consists of four core AI modules:
 
-- Intelligent Rake Reallocation Engine
-- Track Health Monitoring
-- Rolling Stock Health Monitoring
-- Forward Vision Safety System
+* Intelligent Rake Reallocation Engine
+* Track Health Monitoring
+* Rolling Stock Health Monitoring
+* Forward Vision Safety System
 
 ---
 
@@ -16,13 +17,13 @@ The platform consists of four core AI modules:
 
 Railway operations face multiple challenges:
 
-- Inefficient empty rake allocation
-- Unexpected track failures
-- Wheel and bearing breakdowns
-- Collisions due to obstacles on tracks
-- High maintenance costs
-- Freight revenue loss
-- Lack of predictive insights
+* Inefficient empty rake allocation
+* Unexpected track failures
+* Wheel and bearing breakdowns
+* Collisions due to obstacles on tracks
+* High maintenance costs
+* Freight revenue loss
+* Lack of predictive insights
 
 RailGuard AI addresses these challenges using data-driven intelligence and predictive analytics.
 
@@ -66,21 +67,21 @@ Optimize empty rake allocation to maximize revenue, reduce idle time, and minimi
 
 ## Inputs
 
-- Rake Location
-- Capacity
-- Health Score
-- Cargo Requests
-- Route Information
-- Distance
-- Congestion Level
-- Risk Score
+* Rake Location
+* Capacity
+* Health Score
+* Cargo Requests
+* Route Information
+* Distance
+* Congestion Level
+* Risk Score
 
 ## Outputs
 
-- Cargo Availability Probability
-- Expected Revenue
-- Expected Wait Time
-- Best Allocation Recommendation
+* Cargo Availability Probability
+* Expected Revenue
+* Expected Wait Time
+* Best Allocation Recommendation
 
 ## Example
 
@@ -109,15 +110,15 @@ Optimize empty rake allocation to maximize revenue, reduce idle time, and minimi
 
 ## Model Performance
 
-- R² Score: **0.9753**
-- MAE: **₹21,863**
+* R² Score: **0.9753**
+* MAE: **₹21,863**
 
 ## Impact
 
-- Improved fleet utilization
-- Higher freight revenue
-- Reduced empty travel
-- Lower carbon emissions
+* Improved fleet utilization
+* Higher freight revenue
+* Reduced empty travel
+* Lower carbon emissions
 
 ---
 
@@ -133,17 +134,17 @@ Detect potential track defects using vibration data collected from multiple trai
 
 ## Inputs
 
-- Vibration Severity
-- GPS Location
-- Historical Defect Records
-- Weather Conditions
-- Train Consensus
+* Vibration Severity
+* GPS Location
+* Historical Defect Records
+* Weather Conditions
+* Train Consensus
 
 ## Outputs
 
-- Track Risk Score
-- Inspection Recommendations
-- High-Risk Segment Alerts
+* Track Risk Score
+* Inspection Recommendations
+* High-Risk Segment Alerts
 
 ## Workflow
 
@@ -165,12 +166,49 @@ Track Risk Model
 Track Risk Score
 ```
 
+## Example
+
+### Input
+
+```json
+{
+  "vibration_mean": 6.2,
+  "vibration_rms": 5.8,
+  "consensus_count": 4,
+  "historical_defects": 7,
+  "track_age_years": 18,
+  "rainfall": 12
+}
+```
+
+### Output
+
+```json
+{
+  "risk_label": "High",
+  "risk_probability": 67,
+  "inspection_required": true
+}
+```
+
+## Model Performance
+
+* Accuracy: **75.18%**
+* Macro F1 Score: **0.76**
+
+### Risk Classes
+
+* Safe
+* Medium
+* High
+* Critical
+
 ## Impact
 
-- Early fault detection
-- Predictive maintenance
-- Reduced false positives
-- Improved railway safety
+* Early fault detection
+* Predictive maintenance
+* Reduced false positives
+* Improved railway safety
 
 ---
 
@@ -186,18 +224,18 @@ Predict wheel and bearing failures before they cause operational issues.
 
 ## Inputs
 
-- Vibration Data
-- Temperature Data
-- Acoustic Data
-- Maintenance History
+* Vibration Data
+* Temperature Data
+* Acoustic Data
+* Maintenance History
 
 ## Outputs
 
-- Wheel Health Score
-- Bearing Health Score
-- Rake Health Score
-- Failure Probability
-- Maintenance Recommendation
+* Wheel Health Score
+* Bearing Health Score
+* Rake Health Score
+* Failure Probability
+* Maintenance Recommendation
 
 ## Example
 
@@ -226,17 +264,17 @@ Predict wheel and bearing failures before they cause operational issues.
 
 ## Model Performance
 
-- Accuracy: **99.00%**
-- Precision: **98.87%**
-- Recall: **98.31%**
-- F1 Score: **98.59%**
+* Accuracy: **99.00%**
+* Precision: **98.87%**
+* Recall: **98.31%**
+* F1 Score: **98.59%**
 
 ## Impact
 
-- Reduced breakdowns
-- Lower maintenance costs
-- Increased fleet availability
-- Improved operational reliability
+* Reduced breakdowns
+* Lower maintenance costs
+* Increased fleet availability
+* Improved operational reliability
 
 ---
 
@@ -252,16 +290,16 @@ Detect obstacles ahead of the locomotive under various weather and visibility co
 
 ## Inputs
 
-- RGB Camera Feed
-- Thermal Camera Feed
+* RGB Camera Feed
+* Thermal Camera Feed
 
 ## Outputs
 
-- Human Detection
-- Animal Detection
-- Vehicle Detection
-- Obstacle Alerts
-- Risk Assessment
+* Human Detection
+* Animal Detection
+* Vehicle Detection
+* Obstacle Alerts
+* Risk Assessment
 
 ## Workflow
 
@@ -279,19 +317,41 @@ Alert Generation
 
 ## Detectable Objects
 
-- Humans
-- Animals
-- Cars
-- Trucks
-- Buses
-- Motorcycles
-- Other obstacles
+* Humans
+* Animals
+* Cars
+* Trucks
+* Buses
+* Motorcycles
+* Other obstacles
 
 ## Impact
 
-- Reduced collision risk
-- Enhanced night-time visibility
-- Improved operational safety
+* Reduced collision risk
+* Enhanced night-time visibility
+* Improved operational safety
+
+---
+
+# API Endpoints
+
+## Revenue Prediction
+
+```http
+POST /predict
+```
+
+## Rolling Stock Health Prediction
+
+```http
+POST /predict-health
+```
+
+## Track Health Prediction
+
+```http
+POST /predict-track
+```
 
 ---
 
@@ -299,46 +359,46 @@ Alert Generation
 
 ## Machine Learning
 
-- XGBoost
-- Scikit-Learn
-- Pandas
-- NumPy
+* XGBoost
+* Scikit-Learn
+* Pandas
+* NumPy
 
 ## Computer Vision
 
-- YOLOv11
-- OpenCV
+* YOLOv11
+* OpenCV
 
 ## Backend
 
-- FastAPI
-- Uvicorn
+* FastAPI
+* Uvicorn
 
 ## IoT Hardware
 
 ### Track Monitoring
 
-- ESP32
-- MPU6050 Accelerometer
-- GPS Module (NEO-6M)
+* ESP32
+* MPU6050 Accelerometer
+* GPS Module (NEO-6M)
 
 ### Rolling Stock Monitoring
 
-- ESP32
-- MPU6050
-- DS18B20 Temperature Sensor
-- MAX9814 Microphone
+* ESP32
+* MPU6050
+* DS18B20 Temperature Sensor
+* MAX9814 Microphone
 
 ### Forward Vision System
 
-- Raspberry Pi 5 / Jetson Nano
-- RGB Camera
-- Thermal Camera
+* Raspberry Pi 5
+* RGB Camera
+* Thermal Camera
 
 ## Communication
 
-- MQTT
-- REST APIs
+* MQTT
+* REST APIs
 
 ---
 
@@ -346,41 +406,41 @@ Alert Generation
 
 ## Live Railway Map
 
-- Real-Time Rake Tracking
-- Route Monitoring
-- Track Risk Visualization
+* Real-Time Rake Tracking
+* Route Monitoring
+* Track Risk Visualization
 
 ## Track Health Layer
 
-- Track Risk Score
-- High-Risk Segments
-- Inspection Alerts
+* Track Risk Score
+* High-Risk Segments
+* Inspection Alerts
 
 ## Rolling Stock Health Layer
 
-- Wheel Health
-- Bearing Health
-- Rake Health Score
-- Maintenance Alerts
+* Wheel Health
+* Bearing Health
+* Rake Health Score
+* Maintenance Alerts
 
 ## Intelligent Rake Reallocation Layer
 
-- Recommended Cargo
-- Revenue Prediction
-- Empty Distance Saved
-- AI Decision Explanation
+* Recommended Cargo
+* Revenue Prediction
+* Empty Distance Saved
+* AI Decision Explanation
 
 ## Forward Vision Layer
 
-- Live Camera Feed
-- Obstacle Detection Alerts
-- Risk Notifications
+* Live Camera Feed
+* Obstacle Detection Alerts
+* Risk Notifications
 
 ## Sustainability Metrics
 
-- Revenue Saved
-- Empty Distance Avoided
-- CO₂ Emissions Reduced
+* Revenue Saved
+* Empty Distance Avoided
+* CO₂ Emissions Reduced
 
 ---
 
@@ -397,35 +457,57 @@ Far_away/
 │   ├── cargo.csv
 │   ├── routes.csv
 │   ├── health.csv
-│   └── rolling_stock_health.csv
+│   ├── rolling_stock_health.csv
+│   ├── track_health.csv
+│   ├── generate_synthetic_data.py
+│   └── generate_track_health_data.py
 │
 ├── model/
 │   ├── train_model.py
 │   ├── predict.py
-│   ├── train_health_model.py
-│   ├── predict_health.py
 │   ├── model.pkl
 │   ├── encoders.pkl
-│   └── rolling_stock_health_model.pkl
+│   │
+│   ├── train_health_model.py
+│   ├── predict_health.py
+│   ├── rolling_stock_health_model.pkl
+│   │
+│   ├── train_track_model.py
+│   ├── predict_track.py
+│   ├── track_health_model.pkl
+│   └── track_label_encoder.pkl
+│
+├── Yolo_model/
 │
 └── README.md
 ```
 
 ---
 
-# Future Enhancements
+# Expected Impact
 
-- Railway Digital Twin
-- Real-Time GPS Integration
-- Dynamic Route Optimization
-- Thermal Vision Integration
-- ETA Prediction
-- Affected Rake Analysis
-- Predictive Congestion Forecasting
-- Edge AI Deployment
+* Predictive maintenance for tracks and rolling stock
+* Reduced derailment and collision risk
+* Increased freight revenue
+* Reduced empty rake movement
+* Faster inspection prioritization
+* Improved operational efficiency
+* Lower carbon emissions
 
 ---
 
+# Future Enhancements
+
+* Full Railway Digital Twin Implementation
+* Real-Time GPS Integration
+* Dynamic Route Optimization
+* Thermal Vision Integration
+* ETA Prediction
+* Affected Rake Analysis
+* Predictive Congestion Forecasting
+* Edge AI Deployment
+
+---
 
 # Vision
 

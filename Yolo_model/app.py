@@ -4,17 +4,9 @@ from detector import YOLODetector
 from risk_assessment import RiskAssessment
 from alert_system import AlertSystem
 
-# ==========================
-# Configuration
-# ==========================
-
 MODEL_PATH = "yolo11n.pt"
 VIDEO_SOURCE = 0 #Laptop Webcam
 CONFIDENCE_THRESHOLD = 0.5
-
-# ==========================
-# Initialize Components
-# ==========================
 
 detector = YOLODetector(
     model_path=MODEL_PATH,
@@ -25,10 +17,6 @@ risk_engine = RiskAssessment()
 
 alert_system = AlertSystem()
 
-# ==========================
-# Start Video Stream
-# ==========================
-
 cap = cv2.VideoCapture(VIDEO_SOURCE)
 
 if not cap.isOpened():
@@ -38,10 +26,6 @@ if not cap.isOpened():
 
 print("Forward Vision Safety System Started")
 
-# ==========================
-# Main Loop
-# ==========================
-
 while True:
 
     success, frame = cap.read()
@@ -50,40 +34,20 @@ while True:
         print("Video stream ended.")
         break
 
-    # ----------------------
-    # Object Detection
-    # ----------------------
-
     detections = detector.predict(frame)
-
-    # ----------------------
-    # Risk Assessment
-    # ----------------------
 
     risk_results = risk_engine.assess_risk(
         detections
     )
 
-    # ----------------------
-    # Alert Generation
-    # ----------------------
-
     alert_system.generate_alerts(
         risk_results
     )
-
-    # ----------------------
-    # Draw Bounding Boxes
-    # ----------------------
 
     annotated_frame = detector.draw_boxes(
         frame.copy(),
         detections
     )
-
-    # ----------------------
-    # Show Risk Level
-    # ----------------------
 
     y_position = 30
 
@@ -106,10 +70,6 @@ while True:
 
         y_position += 30
 
-    # ----------------------
-    # Display Window
-    # ----------------------
-
     cv2.imshow(
         "Forward Vision Safety System",
         annotated_frame
@@ -120,10 +80,6 @@ while True:
     if key & 0xFF == ord("q"):
         print("Stopping system...")
         break
-
-# ==========================
-# Cleanup
-# ==========================
 
 cap.release()
 cv2.destroyAllWindows()

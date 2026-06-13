@@ -36,6 +36,7 @@ sys.path.append(PROJECT_ROOT)
 
 from model.predict import predict_allocation
 from model.predict_health import predict_health
+from model.predict_track import predict_track
 
 # ── Import Routers ─────────────────────────────────────────
 
@@ -271,7 +272,37 @@ def predict_health_endpoint(req: HealthRequest):
         )
 
 
-# ── Main Entry Point ──────────────────────────────────────
+# MODULE 2 – TRACK HEALTH MONITORING
+
+class TrackRequest(BaseModel):
+    vibration_mean: float = Field(..., description="Mean vibration reading")
+    vibration_rms: float = Field(..., description="RMS vibration reading")
+    consensus_count: int = Field(..., description="Number of consensus reports")
+    historical_defects: int = Field(..., description="Number of historical defects")
+    track_age_years: int = Field(..., description="Age of the track in years")
+    rainfall: float = Field(..., description="Rainfall amount")
+
+@app.post("/predict-track")
+def predict_track_endpoint(req: TrackRequest):
+    """
+    Predict track health risk label and probability.
+    """
+    try:
+        result = predict_track(
+            vibration_mean=req.vibration_mean,
+            vibration_rms=req.vibration_rms,
+            consensus_count=req.consensus_count,
+            historical_defects=req.historical_defects,
+            track_age_years=req.track_age_years,
+            rainfall=req.rainfall
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
 
 if __name__ == "__main__":
     uvicorn.run(
