@@ -331,7 +331,7 @@ Alert Generation
 
 ### Forward Vision System
 
-- Raspberry Pi 5 / Jetson Nano
+- Raspberry Pi 5 
 - RGB Camera
 - Thermal Camera
 
