@@ -136,7 +136,6 @@ def tick_forward_vision():
         distance = random.randint(100, 800)
         confidence = round(random.uniform(0.7, 0.99), 2)
 
-        print("Number of rakes:", len(rakes))
         if not rakes:
             return
 
