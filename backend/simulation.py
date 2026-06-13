@@ -1,13 +1,11 @@
 """
-============================================================
 RailGuard AI — Live Simulation Engine
-============================================================
+
 Generates real-time events to make the Digital Twin feel
 alive during the hackathon demo.
 
 Tracks sustainability metrics and provides a reset()
 function for the pitch "Reset Simulation" button.
-============================================================
 """
 
 import random
@@ -22,7 +20,7 @@ from data_loader import (
 )
 
 
-# ── Sustainability Metrics ─────────────────────────────────
+# Sustainability Metrics 
 
 sustainability = {
     "revenue_saved": 0,
