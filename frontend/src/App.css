@@ -1,0 +1,7 @@
+/* ── App-level styles ──────────────────────────────────── */
+/* Most styles are in index.css (design system).
+   This file holds App-specific overrides only. */
+
+#root {
+  min-height: 100vh;
+}

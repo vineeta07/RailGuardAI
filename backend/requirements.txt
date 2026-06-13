@@ -6,3 +6,6 @@ numpy
 scikit-learn
 joblib
 pydantic
+python-dotenv
+python-multipart
+requests
