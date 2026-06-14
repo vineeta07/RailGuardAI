@@ -15,6 +15,8 @@ Start with:
 import uvicorn
 import os
 import models
+import torch
+torch.set_num_threads(1)
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
