@@ -35,7 +35,26 @@ export default function ProductTour() {
     }
   };
 
-  const steps = [
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  const steps = isMobile ? [
+    {
+      target: '.mobile-menu-btn',
+      content: t('Welcome! Tap this menu icon to navigate through the modules.'),
+      disableBeacon: true,
+      placement: 'bottom',
+    },
+    {
+      target: '.kpi-grid',
+      content: t('Track live sustainability impact here, including revenue saved and CO2 reduced.'),
+      placement: 'bottom',
+    },
+    {
+      target: '.triage-feed',
+      content: t('Keep an eye on the Active Triage feed for real-time critical alerts from the fleet.'),
+      placement: 'top',
+    }
+  ] : [
     {
       target: '#sidebar',
       content: t('Welcome to the Command Center! Use this sidebar to navigate through the modules.'),
@@ -43,12 +62,7 @@ export default function ProductTour() {
       placement: 'right',
     },
     {
-      target: '#railway-map',
-      content: t('This is the Digital Twin Network map. To see real time data, simply click on any rake (train) icon on the map to view its live telemetry.'),
-      placement: 'bottom',
-    },
-    {
-      target: '.sustainability-bar',
+      target: '.kpi-grid',
       content: t('Track our live sustainability impact here, including revenue saved and CO2 reduced.'),
       placement: 'bottom',
     },

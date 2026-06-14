@@ -32,20 +32,20 @@ export default function Homepage() {
   return (
     <div style={{ background: 'var(--bg-base)', minHeight: '100vh', fontFamily: "'Space Mono', monospace" }}>
       {/* Brutalist Top Bar */}
-      <div style={{
+      <div className="brutal-topbar" style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '16px 32px', background: 'var(--bg-base)', 
         borderBottom: '2px solid var(--text-primary)',
       }}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none', color: 'inherit' }}>
-          <img src="/logo.png" alt="RailGuard Logo" style={{ height: 100, objectFit: 'contain', zIndex: 10 }} />
+          <img src="/logo.png" alt="RailGuard Logo" style={{ height: 40, width: 40, objectFit: 'contain', zIndex: 10, marginRight: 8 }} />
           <div style={{ fontSize: '24px', fontWeight: 700, zIndex: 10, fontFamily: "'Playfair Display', serif", textTransform: 'uppercase', letterSpacing: '-1px' }}>
-            Rail<span style={{ color: 'var(--accent)' }}>Guard </span>AI
+            Rail<span style={{ color: 'var(--accent)' }}>Guard</span>
           </div>
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '2px solid var(--text-primary)', padding: '4px 12px', background: 'var(--bg-surface)' }}>
+        <div className="brutal-topbar-controls" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div className="lang-select" style={{ display: 'flex', alignItems: 'center', gap: 8, border: '2px solid var(--text-primary)', padding: '4px 12px', background: 'var(--bg-surface)' }}>
             <Globe size={16} />
             <select 
               value={i18n.language} 
@@ -61,16 +61,16 @@ export default function Homepage() {
           <button onClick={toggle} title="Toggle theme" style={{ border: '2px solid var(--text-primary)', padding: '8px', background: 'var(--bg-surface)', color: 'var(--text-primary)', display: 'flex' }}>
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Link to="/login" style={{ border: '2px solid var(--text-primary)', padding: '8px 24px', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Login</Link>
-          <Link to="/signup" style={{ border: '2px solid var(--text-primary)', padding: '8px 24px', background: 'var(--accent)', color: '#fff', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none', boxShadow: '4px 4px 0 var(--text-primary)' }}>Enter System</Link>
+          <Link to="/login" style={{ border: '2px solid var(--text-primary)', padding: '8px 16px', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Login</Link>
         </div>
       </div>
 
       {/* Split-Screen Hero */}
-      <section style={{ display: 'flex', minHeight: '100vh', paddingTop: '75px', borderBottom: '2px solid var(--text-primary)' }}>
+      <section className="brutal-hero-section" style={{ display: 'flex', minHeight: '100vh', paddingTop: '75px', borderBottom: '2px solid var(--text-primary)' }}>
         {/* Left Side: Raw Typography */}
-        <div style={{ flex: 1, padding: '8% 5% 15% 5%', borderRight: '2px solid var(--text-primary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div className="brutal-hero-left" style={{ flex: 1, padding: '8% 5% 15% 5%', borderRight: '2px solid var(--text-primary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <motion.h1 
+            className="brutal-hero-h1"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -101,14 +101,14 @@ export default function Homepage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <Link to="/signup" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, border: '2px solid var(--text-primary)', padding: '16px 32px', background: 'var(--text-primary)', color: 'var(--bg-base)', fontSize: '20px', fontWeight: 800, textTransform: 'uppercase', textDecoration: 'none', boxShadow: '8px 8px 0 var(--accent)' }}>
+            <Link to="/signup" className="brutal-hero-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, border: '2px solid var(--text-primary)', padding: '16px 32px', background: 'var(--text-primary)', color: 'var(--bg-base)', fontSize: '20px', fontWeight: 800, textTransform: 'uppercase', textDecoration: 'none', boxShadow: '8px 8px 0 var(--accent)' }}>
               Launch Dashboard <ArrowRight size={24} />
             </Link>
           </motion.div>
         </div>
 
         {/* Right Side: Scroll-Driven Asymmetric Visual */}
-        <div style={{ flex: 1, background: 'var(--bg-surface)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="brutal-hero-right" style={{ flex: 1, background: 'var(--bg-surface)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {/* A brutalist structural element that responds to scroll */}
           <motion.div 
             style={{ 
@@ -159,7 +159,7 @@ export default function Homepage() {
       </section>
 
       {/* Brutalist Stats Strip */}
-      <section style={{ display: 'flex', borderBottom: '2px solid var(--text-primary)', background: 'var(--accent)' }}>
+      <section className="brutal-stats" style={{ display: 'flex', borderBottom: '2px solid var(--text-primary)', background: 'var(--accent)' }}>
         {[
           { v: '₹1.24Cr', l: 'REVENUE SAVED' },
           { v: '8,520', l: 'EMPTY KM' },
@@ -174,12 +174,12 @@ export default function Homepage() {
       </section>
 
       {/* Raw Asymmetric Grid Features */}
-      <section style={{ padding: '100px 5%', background: 'var(--bg-base)' }}>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '56px', fontWeight: 900, textTransform: 'uppercase', borderBottom: '4px solid var(--text-primary)', paddingBottom: '24px', marginBottom: '64px' }}>
+      <section style={{ padding: '80px 5%', background: 'var(--bg-base)' }}>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 900, textTransform: 'uppercase', borderBottom: '4px solid var(--text-primary)', paddingBottom: '24px', marginBottom: '64px' }}>
           SYSTEM CAPABILITIES.
         </h2>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px' }}>
           {features.map((f, i) => {
             const Icon = f.icon;
             return (
@@ -210,9 +210,9 @@ export default function Homepage() {
       </section>
 
       {/* Brutalist Footer */}
-      <footer style={{ borderTop: '4px solid var(--text-primary)', padding: '40px 5%', background: 'var(--text-primary)', color: 'var(--bg-base)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '32px', fontWeight: 900 }}>RAILGUARD AI</div>
-        <div style={{ fontSize: '14px', fontWeight: 700 }}>© 2026 // END OF TRANSMISSION</div>
+      <footer className="brutal-footer" style={{ borderTop: '4px solid var(--text-primary)', padding: '40px 5%', background: 'var(--text-primary)', color: 'var(--bg-base)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '24px', fontWeight: 900 }}>RAILGUARD AI</div>
+        <div style={{ fontSize: '12px', fontWeight: 700 }}>© 2026 // END OF TRANSMISSION</div>
       </footer>
     </div>
   );

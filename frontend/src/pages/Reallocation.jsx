@@ -75,7 +75,7 @@ export default function Reallocation() {
         </div>
 
         {/* Current vs Predicted */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 16, marginTop: 20, alignItems: 'center' }}>
+        <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 16, marginTop: 20, alignItems: 'center' }}>
           <div style={{ padding: 14, background: 'var(--bg-card)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 6 }}>Current State</div>
             <div style={{ fontSize: 13, fontWeight: 600 }}>{decision.rake_id} idle at {decision.rake_location}</div>

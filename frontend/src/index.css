@@ -281,8 +281,22 @@ input, select, textarea { font-family: inherit; outline: none; }
 .kpi-change.down { color: var(--danger); }
 .kpi-sparkline { position: absolute; bottom: 0; right: 0; opacity: 0.15; }
 
-/* ── Bento Grid ────────────────────────────────────────── */
-.bento { display: grid; grid-template-columns: 7fr 3fr; gap: 16px; margin-bottom: 20px; }
+/* ── Layout Utilities ──────────────────────────────────── */
+.bento {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .section-grid { grid-template-columns: 1fr; }
+}
 .bento-full { grid-column: 1 / -1; }
 .bento-stack { display: flex; flex-direction: column; gap: 16px; }
 
@@ -624,6 +638,8 @@ input, select, textarea { font-family: inherit; outline: none; }
 .demo-banner-bar.collapsed { left: 64px; }
 
 /* ── Responsive ────────────────────────────────────────── */
+.auth-logo img { width: 100px; height: 100px; }
+
 .mobile-menu-btn {
   display: none; background: transparent; border: none; color: var(--text-primary);
   cursor: pointer; padding: 4px; border-radius: var(--radius-sm);
@@ -641,7 +657,8 @@ input, select, textarea { font-family: inherit; outline: none; }
 @media (max-width: 768px) {
   .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
   .sidebar { transform: translateX(-100%); width: 260px; z-index: 100; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-  .sidebar.mobile-open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.5); }
+  .sidebar.mobile-open { transform: translateX(0); width: 260px !important; box-shadow: 4px 0 24px rgba(0,0,0,0.5); }
+  .sidebar-collapse-btn { display: none !important; }
   .sidebar.mobile-open .sidebar-brand,
   .sidebar.mobile-open .nav-label,
   .sidebar.mobile-open .nav-text { display: block; }
@@ -659,11 +676,13 @@ input, select, textarea { font-family: inherit; outline: none; }
   .header-right select { display: none; }
   .header-pill { padding: 4px 8px; font-size: 10px; }
   
+  .auth-logo img { width: 48px !important; height: 48px !important; }
+  
   /* Auth Pages Mobile */
   .auth-card { padding: 24px 20px; margin: 0 10px; }
   .auth-input { font-size: 16px; /* prevent iOS zoom */ padding: 12px; }
   .auth-title { font-size: 22px; }
-  .auth-logo img { width: 32px; height: 32px; }
+  .auth-logo img { width: 48px !important; height: 48px !important; }
   
   /* Landing Page Mobile */
   .landing-hero { padding: 80px 16px 30px; }
@@ -672,6 +691,27 @@ input, select, textarea { font-family: inherit; outline: none; }
   .landing-stats { gap: 20px; flex-direction: column; align-items: center; }
   .landing-features { padding: 0 16px; margin: 40px auto; gap: 16px; }
   .landing-feat { padding: 20px; }
+  
+  /* Generic mobile grid overrides for inline styles */
+  .mobile-stack { grid-template-columns: 1fr !important; flex-direction: column !important; }
+  .mobile-stack-2 { grid-template-columns: 1fr 1fr !important; }
+  .mobile-map-grid { grid-template-columns: 1fr !important; height: auto !important; }
+  .mobile-hide { display: none !important; }
+  .mobile-full-width { width: 100% !important; max-width: 100% !important; }
+  
+  /* Brutalist Homepage Mobile */
+  .brutal-topbar { padding: 12px 16px !important; }
+  .brutal-topbar-controls { gap: 8px !important; }
+  .brutal-topbar-controls .lang-select { display: none !important; }
+  .brutal-hero-section { flex-direction: column !important; }
+  .brutal-hero-left { padding: 30px 16px 40px !important; border-right: none !important; border-bottom: 2px solid var(--text-primary) !important; }
+  .brutal-hero-right { padding: 40px 16px !important; }
+  .brutal-stats { flex-direction: column !important; }
+  .brutal-stats > div { border-right: none !important; border-bottom: 2px solid var(--bg-base) !important; }
+  .brutal-stats > div:last-child { border-bottom: none !important; }
+  .brutal-hero-h1 { font-size: 40px !important; }
+  .brutal-hero-btn { width: 100%; justify-content: center; font-size: 16px !important; padding: 12px 20px !important; }
+  .brutal-footer { flex-direction: column; gap: 16px; text-align: center; }
 }
 @media (max-width: 480px) { 
   .kpi-grid { grid-template-columns: 1fr; } 

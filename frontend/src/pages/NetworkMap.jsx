@@ -39,7 +39,7 @@ export default function NetworkMap() {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 340px' : '1fr', gap: 16, height: 'calc(100vh - 120px)' }}>
+    <div className="mobile-map-grid" style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 340px' : '1fr', gap: 16, height: 'calc(100vh - 120px)' }}>
       {/* Full Map */}
       <motion.div className="g-card" style={{ padding: 0, overflow: 'hidden' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

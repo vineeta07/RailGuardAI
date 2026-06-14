@@ -32,7 +32,7 @@ export default function Signup() {
         transition={{ duration: 0.35 }}
       >
         <div className="auth-logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, marginBottom: 24 }}>
-          <img src="/logo.png" alt="RailGuard Logo" style={{ height: 100, objectFit: 'contain', zIndex: 10 }} />
+          <img src="/logo.png" alt="RailGuard Logo" style={{ objectFit: 'contain', zIndex: 10 }} />
           <div style={{ fontSize: '24px', fontWeight: 700, zIndex: 10, fontFamily: "'Playfair Display', serif", textTransform: 'uppercase', letterSpacing: '-1px' }}>
             Rail<span style={{ color: 'var(--accent)' }}>Guard </span>AI
           </div>

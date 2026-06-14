@@ -42,7 +42,7 @@ export default function FleetTriage() {
               transition={{ delay: i * 0.05 }}
               whileHover={{ scale: 1.005, borderColor: 'var(--danger)' }}
             >
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+              <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
                 {/* Left: Details */}
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
@@ -51,7 +51,7 @@ export default function FleetTriage() {
                     <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{rake.rake_type} • {rake.location}</span>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, fontSize: 12 }}>
+                  <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, fontSize: 12 }}>
                     <div style={{ padding: 12, background: 'var(--danger-dim)', borderRadius: 'var(--radius-sm)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)', marginBottom: 4 }}><Thermometer size={12} /> Axle Temp</div>
                       <div style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--mono)', color: 'var(--danger)' }}>{(70 + Math.random() * 15).toFixed(1)}°C</div>
@@ -143,7 +143,7 @@ function AccordionRow({ rake, expanded, onToggle }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, fontSize: 12 }}>
+            <div className="mobile-stack-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, fontSize: 12 }}>
               <div><span style={{ color: 'var(--text-muted)' }}>Type:</span> <strong>{rake.rake_type}</strong></div>
               <div><span style={{ color: 'var(--text-muted)' }}>Status:</span> <strong>{rake.status}</strong></div>
               <div><span style={{ color: 'var(--text-muted)' }}>Capacity:</span> <strong>{rake.capacity_tons}T</strong></div>

@@ -113,6 +113,10 @@ def on_startup():
     # Load CSV datasets into memory for the routers we haven't migrated yet
     load_all_data()
     
+    # Seed database if it is empty
+    from seed_db import seed_database
+    seed_database()
+    
     # Start background simulation
     start_simulation()
 

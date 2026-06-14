@@ -62,7 +62,7 @@ export default function TrackHealth() {
       </div>
 
       {/* Predictors Side-by-Side */}
-      <div className="bento" style={{ gridTemplateColumns: '1fr 1fr', marginTop: 16 }}>
+      <div className="bento" style={{ marginTop: 16 }}>
 
         {/* Rolling Stock Health Predictor */}
         <motion.div className="g-card predictor-card" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>

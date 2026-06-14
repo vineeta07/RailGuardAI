@@ -130,9 +130,9 @@ export default function Dashboard() {
           transition={{ delay: 0.15 }}
           style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
         >
-          <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="mobile-stack" style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
             <div className="g-card-title">📊 Fleet Analytics</div>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div className="mobile-stack" style={{ display: 'flex', gap: 12 }}>
               <a 
                 href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/reports/download/docx`}
                 target="_blank" 
@@ -153,7 +153,7 @@ export default function Dashboard() {
               </a>
             </div>
           </div>
-          <div style={{ flex: 1, display: 'flex', padding: 24, gap: 32 }}>
+          <div className="mobile-stack" style={{ flex: 1, display: 'flex', padding: 24, gap: 32 }}>
             
             <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
               <h4 style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, textAlign: 'center' }}>Health Distribution</h4>
@@ -172,7 +172,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div style={{ width: 1, background: 'var(--border)', opacity: 0.5 }} />
+            <div className="mobile-hide" style={{ width: 1, background: 'var(--border)', opacity: 0.5 }} />
 
             <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
               <h4 style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, textAlign: 'center' }}>Rake Type Breakdown</h4>
