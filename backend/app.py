@@ -1,7 +1,6 @@
 """
-============================================================
 RailGuard AI — FastAPI Backend
-============================================================
+
 Main application entry point.
 
 Registers all API routers, configures CORS,
@@ -11,7 +10,6 @@ Start with:
     cd backend
     python -m uvicorn app:app --reload --port 8000
     → Swagger UI at http://localhost:8000/docs
-============================================================
 """
 
 import uvicorn
@@ -25,7 +23,7 @@ from dotenv import load_dotenv
 # Load .env
 load_dotenv()
 
-# ── Project Root for ML Model Imports ──────────────────────
+# Project Root for ML Model Imports 
 
 import sys
 
@@ -38,7 +36,7 @@ from model.predict import predict_allocation
 from model.predict_health import predict_health
 from model.predict_track import predict_track
 
-# ── Import Routers ─────────────────────────────────────────
+# Import Routers 
 
 from routers.rakes import router as rakes_router
 from routers.cargo import router as cargo_router
@@ -48,13 +46,13 @@ from routers.decision_engine import router as decision_router
 from routers.digital_twin import router as digital_twin_router
 from routers.forward_vision import router as forward_vision_router
 
-# ── Import Data & Simulation ──────────────────────────────
+# Import Data & Simulation
 
 from data_loader import load_all_data
 from simulation import start_simulation
 
 
-# ── Create App ─────────────────────────────────────────────
+# Create App 
 
 app = FastAPI(
     title="RailGuard AI API",
