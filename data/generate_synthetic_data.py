@@ -86,9 +86,7 @@ def generate_routes(num_routes=300):
     return pd.DataFrame(routes)
 
 
-# ============================================================
 # CARGO
-# ============================================================
 
 def generate_cargo(routes_df, num_cargo=10000):
 
