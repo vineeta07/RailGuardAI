@@ -1,121 +1,133 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import StatCard from '../components/dashboard/StatCard';
-import StatusBadge from '../components/common/StatusBadge';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { Filter, Camera } from 'lucide-react';
 import { useApi } from '../hooks/useApi';
 import { fetchVisionAlerts } from '../services/api';
 import { MOCK } from '../services/mockData';
 import { timeAgo } from '../utils/formatters';
-import { Eye, AlertTriangle, Shield, Camera } from 'lucide-react';
 
 export default function ForwardVision() {
   const { data, loading } = useApi(fetchVisionAlerts, MOCK.visionAlerts, 3000);
+  const [criticalOnly, setCriticalOnly] = useState(false);
 
-  if (loading || !data) return <LoadingSpinner text="Loading Forward Vision..." />;
+  if (loading || !data) return <div className="spinner-wrap"><div className="spinner" /><div className="spinner-text">Loading Forward Vision...</div></div>;
 
-  const alerts = data.alerts || [];
+  const allAlerts = data.alerts || [];
+  const alerts = criticalOnly ? allAlerts.filter(a => a.risk_level === 'HIGH') : allAlerts;
   const stats = data.stats || {};
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <>
       {/* Stats */}
-      <div className="stat-grid">
-        <StatCard icon={Eye} label="Total Detections" value={data.total || 0} color="blue" />
-        <StatCard icon={AlertTriangle} label="High Risk" value={stats.by_risk?.HIGH || 0} color="red" />
-        <StatCard icon={Shield} label="Medium Risk" value={stats.by_risk?.MEDIUM || 0} color="orange" />
-        <StatCard icon={Camera} label="Low Risk" value={stats.by_risk?.LOW || 0} color="green" />
+      <div className="kpi-grid" style={{ marginBottom: 16 }}>
+        {[
+          { label: 'Total Detections', value: data.total || 0, color: 'blue' },
+          { label: 'High Risk', value: stats.by_risk?.HIGH || 0, color: 'red' },
+          { label: 'Medium Risk', value: stats.by_risk?.MEDIUM || 0, color: 'orange' },
+          { label: 'Low Risk', value: stats.by_risk?.LOW || 0, color: 'green' },
+        ].map((k) => (
+          <div className="kpi-card" key={k.label}>
+            <div className={`kpi-icon ${k.color}`}><Camera size={18} /></div>
+            <div>
+              <div className="kpi-label">{k.label}</div>
+              <div className="kpi-value" style={{ fontFamily: 'var(--mono)' }}>{k.value}</div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="section-grid">
-        {/* Alert Feed */}
+      {/* Split Pane */}
+      <div className="vision-split">
+        {/* Left: Camera Feed */}
         <motion.div
-          className="glass-card"
-          style={{ gridColumn: '1 / -1' }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          className="vision-feed"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          <div className="glass-card-header">
-            <div className="glass-card-title">📡 Real-Time Detection Feed</div>
-            <div className="glass-card-subtitle">Powered by YOLOv11 Object Detection</div>
+          {/* LIVE dot */}
+          <motion.div
+            className="vision-live"
+            animate={{ opacity: [1, 0.4, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <div className="vision-live-dot" />
+            REC • LIVE
+          </motion.div>
+
+          {/* Crosshair */}
+          <div className="vision-crosshair" />
+
+          {/* Camera label */}
+          <div style={{ position: 'absolute', bottom: 12, left: 12, fontSize: 10, fontFamily: 'var(--mono)', color: 'rgba(255,255,255,0.4)', zIndex: 5 }}>
+            CAM-01 RGB • 1920×1080 • 30fps
           </div>
-          <div className="data-table-wrapper">
-            <table className="data-table" id="vision-alerts-table">
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>Object</th>
-                  <th>Confidence</th>
-                  <th>Risk Level</th>
-                  <th>Distance</th>
-                  <th>Rake</th>
-                  <th>Location</th>
-                  <th>Alert</th>
-                </tr>
-              </thead>
-              <tbody>
-                {alerts.map((alert) => (
-                  <tr key={alert.id}>
-                    <td style={{ fontSize: 11 }}>{timeAgo(alert.timestamp)}</td>
-                    <td style={{ fontWeight: 600, textTransform: 'capitalize' }}>{alert.object}</td>
-                    <td>{(alert.confidence * 100).toFixed(0)}%</td>
-                    <td><StatusBadge status={alert.risk_level} /></td>
-                    <td>{alert.distance_m}m</td>
-                    <td style={{ fontWeight: 500 }}>{alert.rake_id}</td>
-                    <td>{alert.location}</td>
-                    <td style={{ fontSize: 12, maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {alert.message}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div style={{ position: 'absolute', bottom: 12, right: 12, fontSize: 10, fontFamily: 'var(--mono)', color: 'rgba(255,255,255,0.4)', zIndex: 5 }}>
+            YOLOv11 Inference: 12ms
+          </div>
+
+          {/* Simulated camera view */}
+          <div style={{
+            color: 'rgba(255,255,255,0.15)', fontSize: 14, fontFamily: 'var(--mono)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 3,
+          }}>
+            <Camera size={48} strokeWidth={1} />
+            Forward Camera Feed
+            <span style={{ fontSize: 10 }}>Locomotive RK-003 • Jaipur Corridor</span>
+          </div>
+
+          {/* Simulated bounding boxes */}
+          <div style={{
+            position: 'absolute', top: '35%', left: '60%', width: 60, height: 45,
+            border: '2px solid var(--danger)', borderRadius: 4, zIndex: 5,
+          }}>
+            <span style={{
+              position: 'absolute', top: -16, left: 0, fontSize: 9,
+              fontFamily: 'var(--mono)', color: 'var(--danger)', background: 'rgba(239,68,68,0.2)',
+              padding: '1px 6px', borderRadius: 3,
+            }}>COW 94%</span>
+          </div>
+          <div style={{
+            position: 'absolute', top: '55%', left: '30%', width: 35, height: 55,
+            border: '2px solid var(--warning)', borderRadius: 4, zIndex: 5,
+          }}>
+            <span style={{
+              position: 'absolute', top: -16, left: 0, fontSize: 9,
+              fontFamily: 'var(--mono)', color: 'var(--warning)', background: 'rgba(245,158,11,0.2)',
+              padding: '1px 6px', borderRadius: 3,
+            }}>PERSON 91%</span>
           </div>
         </motion.div>
-      </div>
 
-      {/* Object Distribution */}
-      {stats.by_object && (
-        <motion.div
-          className="glass-card"
-          style={{ marginTop: 20 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div className="glass-card-header">
-            <div className="glass-card-title">📊 Detection Distribution</div>
+        {/* Right: Detection Log */}
+        <motion.div className="g-card" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}>
+          <div className="g-card-head">
+            <div className="g-card-title">Object Detection Log</div>
+            <button
+              className={`btn btn-sm ${criticalOnly ? 'btn-danger' : 'btn-ghost'}`}
+              onClick={() => setCriticalOnly(!criticalOnly)}
+              id="filter-critical-btn"
+            >
+              <Filter size={12} /> {criticalOnly ? 'Critical' : 'All'}
+            </button>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-            {Object.entries(stats.by_object).map(([obj, count]) => (
-              <div
-                key={obj}
-                style={{
-                  padding: '8px 16px',
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 8,
-                  fontSize: 13,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                }}
-              >
-                <span style={{ textTransform: 'capitalize', fontWeight: 500 }}>{obj}</span>
-                <span style={{
-                  background: 'var(--primary-glow)',
-                  color: 'var(--primary-light)',
-                  padding: '2px 8px',
-                  borderRadius: 12,
-                  fontSize: 11,
-                  fontWeight: 700,
-                }}>
-                  {count}
-                </span>
+
+          <div className="vision-log">
+            {alerts.map((a) => (
+              <div key={a.id} className={`vision-entry ${a.risk_level.toLowerCase()}`}>
+                <div className="vision-entry-time">{timeAgo(a.timestamp)}</div>
+                <div style={{ marginTop: 4, fontSize: 12 }}>
+                  Object: <strong style={{ textTransform: 'capitalize' }}>{a.object}</strong> •
+                  Distance: <strong style={{ fontFamily: 'var(--mono)' }}>{a.distance_m}m</strong> •
+                  Risk: <strong style={{ color: a.risk_level === 'HIGH' ? 'var(--danger)' : a.risk_level === 'MEDIUM' ? 'var(--warning)' : 'var(--success)' }}>{a.risk_level}</strong>
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
+                  {a.rake_id} • {a.location} • Conf: {(a.confidence * 100).toFixed(0)}%
+                </div>
               </div>
             ))}
           </div>
         </motion.div>
-      )}
-    </motion.div>
+      </div>
+    </>
   );
 }

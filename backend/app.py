@@ -113,9 +113,9 @@ def on_startup():
     start_simulation()
 
     print("\n" + "=" * 55)
-    print("  ✅ Backend ready!")
-    print(f"  📡 CORS enabled for: {FRONTEND_URL}")
-    print("  📖 Swagger UI: http://localhost:8000/docs")
+    print("  [SUCCESS] Backend ready!")
+    print(f"  [INFO] CORS enabled for: {FRONTEND_URL}")
+    print("  [INFO] Swagger UI: http://localhost:8000/docs")
     print("=" * 55 + "\n")
 
 

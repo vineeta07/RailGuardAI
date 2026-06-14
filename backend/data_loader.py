@@ -61,7 +61,17 @@ routes_df: pd.DataFrame = pd.DataFrame()
 health_df: pd.DataFrame = pd.DataFrame()
 rakes: list = []
 track_segments: list = []
-forward_vision_alerts: list = []
+forward_vision_alerts: list = [
+    {
+        "id": "FV-INIT",
+        "timestamp": datetime.now().isoformat(),
+        "camera": "CAM-01",
+        "risk_level": "LOW RISK",
+        "confidence": 0.95,
+        "label": "person",
+        "recommendation": "Monitor distance"
+    }
+]
 
 
 # ── Load CSVs ──────────────────────────────────────────────

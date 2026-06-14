@@ -1,36 +1,48 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import DemoModeBanner from '../common/DemoModeBanner';
-import NetworkStatus from '../common/NetworkStatus';
+import AnimatedRouteWrapper from './AnimatedRouteWrapper';
+import ProductTour from '../common/ProductTour';
 import { useDemoMode } from '../../hooks/useDemoMode';
+import { useAuth } from '../../hooks/useAuth';
 
 const pageTitles = {
-  '/':               'Dashboard',
-  '/digital-twin':   'Digital Twin',
-  '/rakes':          'Rake Fleet Management',
-  '/track-health':   'Track Health Monitor',
-  '/rolling-stock':  'Rolling Stock Health',
-  '/forward-vision': 'Forward Vision Safety',
-  '/sustainability': 'Sustainability Impact',
+  '/app':              'Overview',
+  '/app/network-map':  'Network Map',
+  '/app/fleet-triage': 'Fleet Triage',
+  '/app/reallocation': 'AI Reallocation',
+  '/app/track-health': 'Track Health',
+  '/app/forward-vision': 'Forward Vision',
 };
 
 export default function Layout() {
+  const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const { isDemoMode } = useDemoMode();
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) return <Navigate to="/" replace />;
+
   const title = pageTitles[location.pathname] || 'RailGuard AI';
 
   return (
-    <div className="app-layout">
-      <Sidebar />
-      <div className="main-area">
-        <Header title={title} />
-        <main className="page-content">
-          <Outlet />
-        </main>
+    <div className="app-shell">
+      <ProductTour />
+      <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
+      <div className={`main-area${collapsed ? ' collapsed' : ''}`}>
+        <Header collapsed={collapsed} title={title} />
+        <div className="page-wrap">
+          <AnimatedRouteWrapper>
+            <Outlet />
+          </AnimatedRouteWrapper>
+        </div>
       </div>
-      {isDemoMode && <DemoModeBanner />}
-      <NetworkStatus />
+      {isDemoMode && (
+        <div className={`demo-banner-bar${collapsed ? ' collapsed' : ''}`}>
+          📡 Demo Mode — Showing cached data (backend unreachable)
+        </div>
+      )}
     </div>
   );
 }

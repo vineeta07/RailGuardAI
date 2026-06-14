@@ -37,6 +37,11 @@ export const fetchTrackHealth    = () => request('/api/track-health');
 export const fetchTrackAlerts    = () => request('/api/track-health/alerts');
 export const fetchAffectedRakes  = () => request('/api/track-health/affected-rakes');
 export const fetchTrackMapData   = () => request('/api/track-health/map-data');
+export const predictTrack        = (data) =>
+  request('/predict-track', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
 
 // ── Decision Engine ───────────────────────────────────────
 export const fetchDecision = (rakeId) =>

@@ -26,6 +26,11 @@ export default function RailwayMap({
   className = '',
   focusBounds,
 }) {
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const tileUrl = theme === 'light' 
+    ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+    : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
   return (
     <div className={`map-container ${className}`} id="railway-map">
       <MapContainer
@@ -35,7 +40,7 @@ export default function RailwayMap({
         zoomControl={true}
       >
         <TileLayer
-          url={MAP_CONFIG.tileUrl}
+          url={tileUrl}
           attribution={MAP_CONFIG.tileAttribution}
         />
 

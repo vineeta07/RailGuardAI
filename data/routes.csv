@@ -35,7 +35,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 34,Mumbai,Kolkata,1427,16.1,Medium,0.883
 35,Surat,Jharkhand,1782,22.55,High,0.887
 36,Bangalore,Mumbai,727,13.62,Low,0.899
-37,Chennai,Kolkata,1596,20.85,Low,0.161
 38,Delhi,Kolkata,1056,17.91,Medium,0.237
 39,Ahmedabad,Chennai,1627,21.41,High,0.658
 40,Mumbai,Chennai,569,9.39,Low,0.973
@@ -52,7 +51,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 51,Jaipur,Kolkata,674,7.55,High,0.86
 52,Mumbai,Ahmedabad,781,9.42,Low,0.127
 53,Mumbai,Lucknow,1695,28.91,Medium,0.085
-54,Chennai,Kolkata,368,4.15,Medium,0.041
 55,Bangalore,Kolkata,1181,22.23,Low,0.963
 56,Surat,Jharkhand,2031,30.61,Low,0.156
 57,Delhi,Surat,659,11.5,High,0.638
@@ -72,7 +70,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 71,Mumbai,Bangalore,1648,20.7,Low,0.378
 72,Mumbai,Ahmedabad,2003,30.54,Low,0.1
 73,Chennai,Jharkhand,175,2.73,High,0.677
-74,Chennai,Kolkata,1490,27.94,Low,0.602
 75,Chennai,Jaipur,1267,15.53,Low,0.494
 76,Surat,Ahmedabad,1338,18.63,Medium,0.969
 77,Lucknow,Mumbai,1642,24.49,Low,0.397
@@ -171,7 +168,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 170,Mumbai,Chennai,792,10.68,Low,0.389
 171,Bangalore,Chennai,1236,15.67,Medium,0.949
 172,Surat,Lucknow,857,15.47,Low,0.27
-173,Chennai,Kolkata,1862,22.26,High,0.955
 174,Delhi,Jharkhand,253,3.67,Low,0.352
 175,Mumbai,Jharkhand,160,2.06,Low,0.246
 176,Kolkata,Delhi,1352,26.99,High,0.005
@@ -201,7 +197,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 200,Jharkhand,Lucknow,1586,20.81,Medium,0.087
 201,Bangalore,Jaipur,2475,31.8,Low,0.533
 202,Ahmedabad,Jaipur,1072,12.75,Low,0.481
-203,Kolkata,Chennai,1691,22.11,Medium,0.864
 204,Mumbai,Surat,315,3.85,Medium,0.851
 205,Lucknow,Jharkhand,1816,23.52,Medium,0.753
 206,Surat,Ahmedabad,656,7.73,Low,0.826
@@ -268,7 +263,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 267,Ahmedabad,Jharkhand,111,1.98,Medium,0.246
 268,Chennai,Bangalore,1449,18.14,Medium,0.521
 269,Ahmedabad,Bangalore,1114,12.97,Low,0.955
-270,Chennai,Kolkata,423,4.84,Low,0.101
 271,Chennai,Jaipur,1792,21.82,Medium,0.311
 272,Chennai,Delhi,101,1.66,Low,0.122
 273,Surat,Bangalore,2306,29.43,Low,0.567

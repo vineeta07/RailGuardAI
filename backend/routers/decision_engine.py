@@ -97,16 +97,17 @@ def make_decision(req: DecisionRequest):
         else "Warning — Monitor" if health > 50
         else "Poor — Limited Allocation"
     )
-
     # ── Find Nearby Cargo ──────────────────────────────
     nearby_cargo = get_available_cargo_for_city(location)
 
     # ── Build Options ──────────────────────────────────
     options = []
 
+    # Use the ML allocation model to predict revenue
+    from model.predict import predict_allocation
+
     for cargo in nearby_cargo[:5]:  # Top 5 cargo options
         dest = cargo.get("Destination", "Unknown")
-        revenue = cargo.get("Revenue", 0)
         tons = cargo.get("Tons", 0)
         cargo_type = cargo.get("Cargo_Type", "Unknown")
 
@@ -116,6 +117,25 @@ def make_decision(req: DecisionRequest):
         travel_time = route_info.get("travel_time", round(distance / 70, 1))
         congestion = route_info.get("congestion", "Medium")
         risk_score = route_info.get("risk_score", random.uniform(0.1, 0.8))
+
+        # ── ML Prediction ──────────────────────────────
+        input_features = {
+            "Cargo_Type": cargo_type,
+            "Source": location,
+            "Destination": dest,
+            "Tons": tons,
+            "Distance_km": distance,
+            "Travel_Time_h": travel_time,
+            "Congestion": congestion,
+            "Risk_Score": risk_score
+        }
+        
+        try:
+            predicted_revenue = predict_allocation(input_features)
+            revenue = predicted_revenue
+        except Exception as e:
+            print(f"[ML ERROR] Allocation prediction failed: {e}")
+            revenue = cargo.get("Revenue", 0) # Fallback
 
         # ── Score Calculation ──────────────────────────
         revenue_score = min(100, (revenue / 8000))  # Normalize to 0-100
@@ -143,7 +163,7 @@ def make_decision(req: DecisionRequest):
             "destination": dest,
             "tons": tons,
             "revenue": revenue,
-            "revenue_display": f"₹{revenue/100000:.1f}L",
+            "revenue_display": f"₹{revenue/100000:.1f}L (AI Predicted)",
             "distance_km": distance,
             "travel_time_h": travel_time,
             "congestion": congestion,

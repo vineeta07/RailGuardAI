@@ -138,6 +138,9 @@ def tick_forward_vision():
         distance = random.randint(100, 800)
         confidence = round(random.uniform(0.7, 0.99), 2)
 
+        if not rakes:
+            return
+            
         rake = random.choice(rakes)
 
         alert = {
