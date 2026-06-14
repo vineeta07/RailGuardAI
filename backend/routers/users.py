@@ -32,9 +32,14 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class UserUpdate(BaseModel):
+    name: str | None = None
+    profilePic: str | None = None
+
 class UserResponse(BaseModel):
     id: int
     name: str | None = None
+    profilePic: str | None = None
     email: str
     is_active: int
 
@@ -107,4 +112,15 @@ def login_for_access_token(
 @router.get("/me", response_model=UserResponse)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     """Fetch profile data of the currently logged-in user."""
+    return current_user
+
+@router.put("/me", response_model=UserResponse)
+def update_users_me(updates: UserUpdate, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Update profile data of the currently logged-in user."""
+    if updates.name is not None:
+        current_user.name = updates.name
+    if updates.profilePic is not None:
+        current_user.profilePic = updates.profilePic
+    db.commit()
+    db.refresh(current_user)
     return current_user

@@ -1,10 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
-import urllib.parse
+import os
+from dotenv import load_dotenv
 
-password = urllib.parse.quote_plus("vineeta-007")
-SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:{password}@localhost:5432/railguard_db"
+load_dotenv()
+
+# Read the database URL from the .env file
+SQLALCHEMY_DATABASE_URL = os.environ.get("DATABASE_URL")
+if not SQLALCHEMY_DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set. Please create a .env file with your database credentials.")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -100,5 +100,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     name = Column(String, nullable=True)
+    profilePic = Column(String, nullable=True)
     is_active = Column(Integer, default=1)
 
