@@ -57,7 +57,7 @@ from simulation import start_simulation
 app = FastAPI(
     title="RailGuard AI API",
     description=(
-        "AI-Powered Railway Safety, Predictive Maintenance "
+        "AI-Powered Railway Safety, Predictive Maintenance, "
         "& Operational Intelligence Platform"
     ),
     version="2.0.0",

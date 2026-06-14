@@ -32,7 +32,7 @@ export default function RailwayMap({
     : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
   return (
-    <div className={`map-container ${className}`} id="railway-map">
+    <div className={`map-container ${className}`} id="railway-map" style={{ position: 'relative' }}>
       <MapContainer
         center={MAP_CONFIG.center}
         zoom={MAP_CONFIG.zoom}
@@ -58,6 +58,26 @@ export default function RailwayMap({
           />
         ))}
       </MapContainer>
+
+      {/* Map Legend Box */}
+      <div style={{
+        position: 'absolute', bottom: 20, right: 20, zIndex: 1000,
+        background: 'var(--bg-surface)', padding: '12px 16px',
+        borderRadius: 'var(--radius)', border: '1px solid var(--border)',
+        boxShadow: 'var(--shadow-lg)', backdropFilter: 'blur(10px)',
+        fontSize: '12px', color: 'var(--text-secondary)'
+      }}>
+        <div style={{ fontWeight: 600, marginBottom: 8, color: 'var(--text-primary)' }}>Risk Legend</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <div style={{ width: 12, height: 4, background: '#ef4444', borderRadius: 2 }} /> High Risk
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <div style={{ width: 12, height: 4, background: '#f59e0b', borderRadius: 2 }} /> Medium Risk
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 12, height: 4, background: '#10b981', borderRadius: 2 }} /> Low Risk
+        </div>
+      </div>
     </div>
   );
 }

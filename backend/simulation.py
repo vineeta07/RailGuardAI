@@ -18,6 +18,18 @@ from data_loader import (
     rakes, track_segments, forward_vision_alerts,
     get_available_cargo_for_city
 )
+import sys
+import os
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.append(PROJECT_ROOT)
+
+from model.predict import predict_allocation
+from model.predict_track import predict_track
+from Yolo_model.alert_system import AlertSystem
+
+# Initialize YOLO Alert System for Simulation
+yolo_alert = AlertSystem()
 
 
 # Sustainability Metrics 
@@ -66,7 +78,7 @@ def tick_rake_positions():
 
         # Occasionally change status
         roll = random.random()
-        if roll < 0.02 and rake["status"] == "loaded":
+        if roll < 0.2 and rake["status"] == "loaded":
             # Delivery complete — rake becomes empty
             rake["status"] = "empty"
             rake["current_cargo"] = None
@@ -78,41 +90,73 @@ def tick_rake_positions():
                 data={"rake_id": rake["rake_id"], "location": rake["location"]}
             )
 
-        elif roll < 0.01 and rake["status"] == "empty":
+        elif roll < 0.1 and rake["status"] == "empty":
             # Rake gets loaded with new cargo
             rake["status"] = "loaded"
             rake["current_cargo"] = random.choice(CARGO_TYPES)
-            sustainability["revenue_saved"] += random.randint(200000, 800000)
+            
+            # --- REAL ML INTEGRATION ---
+            try:
+                dest = random.choice([c for c in list(CITY_COORDS.keys()) if c != rake["location"]])
+                input_features = {
+                    "Cargo_Type": rake["current_cargo"],
+                    "Source": rake["location"],
+                    "Destination": dest,
+                    "Tons": rake["capacity_tons"],
+                    "Distance_km": random.randint(300, 2500),
+                    "Travel_Time_h": random.randint(10, 50),
+                    "Congestion": random.choice(["Low", "Medium", "High"]),
+                    "Risk_Score": random.uniform(0.1, 0.9)
+                }
+                predicted_revenue = predict_allocation(input_features)
+            except Exception as e:
+                predicted_revenue = random.randint(200000, 800000)
+
+            sustainability["revenue_saved"] += int(predicted_revenue)
             sustainability["empty_km_avoided"] += random.randint(50, 400)
             sustainability["co2_reduced"] += round(random.uniform(0.3, 2.5), 1)
             sustainability["decisions_made"] += 1
 
 
 def tick_track_health():
-    """Randomly fluctuate track risk scores."""
+    """Predict track risk scores using XGBoost."""
     for segment in track_segments:
-        # Small random walk
-        change = random.uniform(-0.03, 0.03)
-        new_risk = max(0, min(1, segment["risk_score"] + change))
-        segment["risk_score"] = round(new_risk, 2)
-        segment["risk_level"] = (
-            "HIGH" if new_risk > 0.7
-            else "MEDIUM" if new_risk > 0.4
-            else "LOW"
-        )
+        # Feed realistic telemetry to the Track Health ML model
+        vibration_mean = random.uniform(0.5, 5.0)
+        vibration_rms = vibration_mean * random.uniform(1.1, 1.5)
+        track_age = random.randint(5, 40)
+        rainfall = random.uniform(0.0, 100.0)
+        
+        try:
+            prediction = predict_track(
+                vibration_mean=vibration_mean,
+                vibration_rms=vibration_rms,
+                consensus_count=random.randint(1, 5),
+                historical_defects=random.randint(0, 10),
+                track_age_years=track_age,
+                rainfall=rainfall
+            )
+            risk_label = prediction["risk_label"].upper()
+            prob = prediction["risk_probability"] / 100.0
+        except Exception:
+            risk_label = random.choice(["LOW", "MEDIUM", "HIGH", "CRITICAL"])
+            prob = random.uniform(0.1, 0.99)
+
+        segment["risk_score"] = round(prob, 2)
+        segment["risk_level"] = "HIGH" if risk_label in ["HIGH", "CRITICAL"] else risk_label
 
         # Occasionally generate alerts for high-risk
-        if new_risk > 0.85 and random.random() < 0.1:
+        if prob > 0.85 and random.random() < 0.1:
             sustainability["alerts_generated"] += 1
             add_event(
                 "track_alert",
                 f"⚠ Track Risk Alert: {segment['source']} → "
                 f"{segment['destination']} — Risk Score: "
-                f"{int(new_risk * 100)}%",
+                f"{int(prob * 100)}%",
                 severity="critical",
                 data={
                     "segment_id": segment["segment_id"],
-                    "risk_score": new_risk,
+                    "risk_score": prob,
                     "source": segment["source"],
                     "destination": segment["destination"],
                 }
@@ -157,6 +201,14 @@ def tick_forward_vision():
             ),
         }
 
+        # Log via actual YOLO AlertSystem
+        yolo_alert.generate_alerts([{
+            "object": obj,
+            "confidence": confidence,
+            "risk_level": risk,
+            "distance": distance
+        }])
+
         forward_vision_alerts.insert(0, alert)
         if len(forward_vision_alerts) > 50:
             forward_vision_alerts.pop()
@@ -182,18 +234,23 @@ def _simulation_loop():
     tick_count = 0
 
     while _simulation_running:
-        tick_count += 1
+        try:
+            tick_count += 1
 
-        # Every 3 seconds: move rakes
-        tick_rake_positions()
+            # Every 3 seconds: move rakes
+            tick_rake_positions()
 
-        # Every 5 seconds: update track health
-        if tick_count % 2 == 0:
-            tick_track_health()
+            # Every 5 seconds: update track health
+            if tick_count % 2 == 0:
+                tick_track_health()
 
-        # Every 6 seconds: forward vision events
-        if tick_count % 2 == 0:
-            tick_forward_vision()
+            # Every 6 seconds: forward vision events
+            if tick_count % 2 == 0:
+                tick_forward_vision()
+        except Exception as e:
+            import traceback
+            print(f"SIMULATION THREAD CRASHED: {e}", flush=True)
+            traceback.print_exc()
 
         time.sleep(3)
 

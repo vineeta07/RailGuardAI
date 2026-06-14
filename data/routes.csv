@@ -1,12 +1,9 @@
 Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 1,Surat,Chennai,960,16.74,Medium,0.597
 2,Jharkhand,Kolkata,1338,25.57,High,0.601
-3,Bangalore,Kolkata,1785,34.16,Medium,0.939
 4,Delhi,Jaipur,1284,20.65,Medium,0.432
 5,Mumbai,Chennai,1999,28.33,Medium,0.046
-6,Kolkata,Bangalore,2168,31.87,Low,0.942
 7,Delhi,Jharkhand,1463,24.53,Medium,0.61
-8,Bangalore,Kolkata,2353,35.85,Low,0.755
 9,Jaipur,Surat,1229,16.9,Low,0.842
 10,Delhi,Ahmedabad,2417,30.56,Low,0.57
 11,Lucknow,Bangalore,437,6.1,Medium,0.965
@@ -20,7 +17,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 19,Surat,Chennai,1283,17.35,Medium,0.88
 20,Jharkhand,Lucknow,895,10.9,Low,0.893
 21,Jharkhand,Surat,1596,25.45,Low,0.228
-22,Lucknow,Chennai,1072,12.7,Low,0.511
 23,Lucknow,Ahmedabad,1357,21.37,High,0.323
 24,Bangalore,Jharkhand,1236,23.5,Low,0.247
 25,Surat,Delhi,1736,28.28,Low,0.61
@@ -47,11 +43,9 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 47,Jharkhand,Delhi,884,10.53,Low,0.709
 48,Surat,Bangalore,637,7.73,High,0.913
 49,Jharkhand,Surat,135,1.65,Medium,0.702
-50,Kolkata,Bangalore,1266,19.47,Low,0.578
 51,Jaipur,Kolkata,674,7.55,High,0.86
 52,Mumbai,Ahmedabad,781,9.42,Low,0.127
 53,Mumbai,Lucknow,1695,28.91,Medium,0.085
-55,Bangalore,Kolkata,1181,22.23,Low,0.963
 56,Surat,Jharkhand,2031,30.61,Low,0.156
 57,Delhi,Surat,659,11.5,High,0.638
 58,Surat,Ahmedabad,2394,46.12,Medium,0.159
@@ -69,7 +63,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 70,Mumbai,Bangalore,2243,35.25,High,0.858
 71,Mumbai,Bangalore,1648,20.7,Low,0.378
 72,Mumbai,Ahmedabad,2003,30.54,Low,0.1
-73,Chennai,Jharkhand,175,2.73,High,0.677
 75,Chennai,Jaipur,1267,15.53,Low,0.494
 76,Surat,Ahmedabad,1338,18.63,Medium,0.969
 77,Lucknow,Mumbai,1642,24.49,Low,0.397
@@ -77,7 +70,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 79,Mumbai,Surat,599,10.07,High,0.592
 80,Chennai,Surat,1910,23.56,Medium,0.424
 81,Jharkhand,Kolkata,138,2.05,Low,0.405
-82,Jharkhand,Chennai,555,10.15,Medium,0.746
 83,Lucknow,Mumbai,923,12.98,Low,0.802
 84,Ahmedabad,Surat,302,3.48,Low,0.695
 85,Lucknow,Delhi,2194,29.18,Medium,0.455
@@ -100,7 +92,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 102,Surat,Kolkata,2228,25.32,Low,0.927
 103,Jharkhand,Mumbai,1975,28.89,High,0.493
 104,Kolkata,Jharkhand,2242,33.96,Medium,0.18
-105,Chennai,Lucknow,380,4.43,Low,0.668
 106,Delhi,Chennai,1128,17.68,Low,0.032
 107,Jaipur,Mumbai,2380,37.05,High,0.129
 108,Jharkhand,Lucknow,2396,34.6,Medium,0.512
@@ -113,10 +104,7 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 115,Chennai,Surat,2181,30.16,Medium,0.564
 116,Jharkhand,Lucknow,1641,19.08,Medium,0.244
 117,Jaipur,Ahmedabad,1412,28.07,Low,0.365
-118,Chennai,Lucknow,1260,23.68,Medium,0.41
-119,Chennai,Lucknow,1346,15.68,Medium,0.917
 120,Jaipur,Surat,1729,30.42,Medium,0.929
-121,Bangalore,Kolkata,2320,28.72,Low,0.324
 122,Kolkata,Ahmedabad,324,4.08,Medium,0.707
 123,Jaipur,Ahmedabad,2017,35.91,Low,0.533
 124,Mumbai,Surat,789,11.57,Medium,0.549
@@ -141,13 +129,11 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 143,Surat,Mumbai,1736,19.42,High,0.125
 144,Lucknow,Mumbai,1954,31.29,Low,0.608
 145,Lucknow,Ahmedabad,301,3.67,Low,0.333
-146,Chennai,Jharkhand,1725,19.87,Low,0.347
 147,Delhi,Mumbai,1038,20.23,High,0.248
 148,Lucknow,Surat,1303,19.52,High,0.362
 149,Jaipur,Delhi,1592,22.55,High,0.459
 150,Chennai,Surat,441,8.26,High,0.502
 151,Mumbai,Bangalore,1051,12.23,Low,0.191
-152,Bangalore,Kolkata,2165,35.05,Medium,0.528
 153,Jaipur,Mumbai,2261,32.36,Medium,0.103
 154,Bangalore,Surat,899,14.76,High,0.527
 155,Mumbai,Bangalore,154,2.74,Medium,0.659
@@ -172,16 +158,13 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 175,Mumbai,Jharkhand,160,2.06,Low,0.246
 176,Kolkata,Delhi,1352,26.99,High,0.005
 177,Kolkata,Jaipur,1140,12.95,Low,0.185
-178,Bangalore,Kolkata,1899,25.13,Medium,0.724
 179,Jaipur,Lucknow,1212,15.98,Medium,0.052
 180,Jharkhand,Surat,500,8.74,Medium,0.915
 181,Ahmedabad,Bangalore,236,4.09,Low,0.422
 182,Delhi,Ahmedabad,1034,15.16,Medium,0.645
-183,Bangalore,Kolkata,2335,33.72,High,0.53
 184,Jharkhand,Surat,463,6.35,High,0.538
 185,Jaipur,Jharkhand,115,1.71,High,0.418
 186,Kolkata,Delhi,350,4.12,Medium,0.939
-187,Kolkata,Bangalore,913,14.26,Medium,0.402
 188,Ahmedabad,Jharkhand,371,4.37,High,0.768
 189,Lucknow,Surat,439,5.52,Low,0.11
 190,Bangalore,Delhi,2471,31.43,Medium,0.277
@@ -193,7 +176,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 196,Mumbai,Jharkhand,1143,12.73,Low,0.396
 197,Delhi,Kolkata,2209,24.58,High,0.463
 198,Bangalore,Jharkhand,2476,28.86,High,0.457
-199,Bangalore,Kolkata,1087,15.74,Low,0.852
 200,Jharkhand,Lucknow,1586,20.81,Medium,0.087
 201,Bangalore,Jaipur,2475,31.8,Low,0.533
 202,Ahmedabad,Jaipur,1072,12.75,Low,0.481
@@ -203,7 +185,6 @@ Route_ID,Source,Destination,Distance_km,Travel_Time_h,Congestion,Risk_Score
 207,Jharkhand,Ahmedabad,1674,29.66,High,0.832
 208,Surat,Delhi,1347,25.24,Low,0.56
 209,Bangalore,Delhi,799,15.86,High,0.128
-210,Kolkata,Bangalore,685,10.18,High,0.392
 211,Ahmedabad,Surat,1319,23.16,Medium,0.947
 212,Mumbai,Surat,985,15.43,Medium,0.046
 213,Delhi,Ahmedabad,862,15.61,Medium,0.025
