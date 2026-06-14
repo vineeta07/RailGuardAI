@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, Sun, Moon, Globe } from 'lucide-react';
+import { Bell, Sun, Moon, Globe, Menu } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../hooks/useTheme';
 import { useDemoMode } from '../../hooks/useDemoMode';
 import { useAuth } from '../../hooks/useAuth';
 
-export default function Header({ collapsed, title }) {
+export default function Header({ collapsed, title, onMobileMenuClick }) {
   const { theme, toggle: toggleTheme } = useTheme();
   const { isDemoMode, toggleDemoMode } = useDemoMode();
   const { user, logout } = useAuth();
@@ -33,6 +33,9 @@ export default function Header({ collapsed, title }) {
   return (
     <header className={`header${collapsed ? ' collapsed' : ''}`} id="app-header">
       <div className="header-left">
+        <button className="mobile-menu-btn" onClick={onMobileMenuClick} aria-label="Open Menu">
+          <Menu size={20} />
+        </button>
         <span className="header-page-title">{title || 'Overview'}</span>
       </div>
 

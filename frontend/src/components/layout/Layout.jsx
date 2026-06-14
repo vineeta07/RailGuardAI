@@ -19,6 +19,7 @@ const pageTitles = {
 
 export default function Layout() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const { isDemoMode } = useDemoMode();
   const { isAuthenticated } = useAuth();
@@ -30,9 +31,10 @@ export default function Layout() {
   return (
     <div className="app-shell">
       <ProductTour />
-      <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
+      <Sidebar collapsed={collapsed} mobileOpen={mobileOpen} onToggle={() => setCollapsed(c => !c)} closeMobile={() => setMobileOpen(false)} />
+      {mobileOpen && <div className="mobile-overlay" onClick={() => setMobileOpen(false)}></div>}
       <div className={`main-area${collapsed ? ' collapsed' : ''}`}>
-        <Header collapsed={collapsed} title={title} />
+        <Header collapsed={collapsed} title={title} onMobileMenuClick={() => setMobileOpen(true)} />
         <div className="page-wrap">
           <AnimatedRouteWrapper>
             <Outlet />

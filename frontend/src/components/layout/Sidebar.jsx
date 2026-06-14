@@ -31,13 +31,13 @@ const sections = [
   }
 ];
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, mobileOpen, onToggle, closeMobile }) {
   const location = useLocation();
   const { t } = useTranslation();
   const { logout } = useAuth();
 
   return (
-    <nav className={`sidebar${collapsed ? ' collapsed' : ''}`} id="sidebar">
+    <nav className={`sidebar${collapsed ? ' collapsed' : ''}${mobileOpen ? ' mobile-open' : ''}`} id="sidebar">
       {/* Collapse toggle */}
       <button className="sidebar-collapse-btn" onClick={onToggle} title="Toggle sidebar">
         {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
@@ -79,6 +79,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                   className={`nav-item${isActive ? ' active' : ''}`}
                   id={`nav-${item.to.replace('/app/', '').replace('/app', 'overview') || 'overview'}`}
                   end={item.to === '/app'}
+                  onClick={closeMobile}
                 >
                   <Icon className="nav-icon" size={18} />
                   <span className="nav-text">{t(item.label)}</span>
