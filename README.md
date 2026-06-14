@@ -5,7 +5,6 @@
 RailGuard AI is an intelligent railway monitoring and decision-support platform that combines Machine Learning, Computer Vision, IoT, and Real-Time Analytics to improve railway safety, optimize freight operations, and enable predictive maintenance.
 
 The platform consists of four core AI modules:
-
 * Intelligent Rake Reallocation Engine
 * Track Health Monitoring
 * Rolling Stock Health Monitoring
@@ -13,10 +12,9 @@ The platform consists of four core AI modules:
 
 ---
 
-# Problem Statement
+## Problem Statement
 
 Railway operations face multiple challenges:
-
 * Inefficient empty rake allocation
 * Unexpected track failures
 * Wheel and bearing breakdowns
@@ -25,11 +23,11 @@ Railway operations face multiple challenges:
 * Freight revenue loss
 * Lack of predictive insights
 
-RailGuard AI addresses these challenges using data-driven intelligence and predictive analytics.
+**RailGuard AI addresses these challenges using data-driven intelligence and predictive analytics.**
 
 ---
 
-# System Architecture
+##  System Architecture
 
 ```text
 Track Sensors
@@ -55,460 +53,157 @@ Dashboard & Visualization
 
 ---
 
-# Module 1: Intelligent Rake Reallocation Engine
+## Quick Start & Setup Guide
 
-## Objective
+Follow these steps to run the complete RailGuard AI stack on your local machine.
 
-Optimize empty rake allocation to maximize revenue, reduce idle time, and minimize empty movement.
+### 1. Prerequisites
+- **Node.js** (v18 or higher)
+- **Python** (v3.9 or higher)
+- **PostgreSQL** (running locally or via Docker)
 
-## Model
+### 2. Database Setup
 
-**XGBoost Regressor**
-
-## Inputs
-
-* Rake Location
-* Capacity
-* Health Score
-* Cargo Requests
-* Route Information
-* Distance
-* Congestion Level
-* Risk Score
-
-## Outputs
-
-* Cargo Availability Probability
-* Expected Revenue
-* Expected Wait Time
-* Best Allocation Recommendation
-
-## Example
-
-### Input
-
-```json
-{
-  "Cargo_Type": "Coal",
-  "Source": "Mumbai",
-  "Destination": "Delhi",
-  "Tons": 4000,
-  "Distance_km": 1200,
-  "Travel_Time_h": 20,
-  "Congestion": "Medium",
-  "Risk_Score": 25
-}
+Create a local PostgreSQL database for the application to connect to.
+```bash
+# In your terminal (assuming you have Postgres installed):
+psql -U postgres
+CREATE DATABASE railguard_db;
 ```
 
-### Output
+### 3. Backend Setup (FastAPI + Machine Learning)
 
-```json
-{
-  "predicted_revenue": 452000
-}
+Open a terminal and navigate to the `backend` folder.
+
+```bash
+# 1. Navigate to backend directory
+cd backend
+
+# 2. Create and activate a virtual environment
+python -m venv venv
+
+# On Windows:
+venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Set up environment variables
+# Create a .env file based on the provided configuration
+echo "FRONTEND_URL=http://localhost:5173" > .env
+echo "DATABASE_URL=postgresql://postgres:vineeta-007@localhost:5432/railguard_db" >> .env
+echo "JWT_SECRET_KEY=your_super_secret_key_here" >> .env
+
+# 5. Train the ML Models (required before starting the server)
+cd ../model
+python train_model.py
+python train_health_model.py
+python train_track_model.py
+cd ../backend
+
+# 6. Start the FastAPI Server (This will automatically seed the database on first run)
+python -m uvicorn app:app --reload --port 8000
 ```
-
-## Model Performance
-
-* R² Score: **0.9753**
-* MAE: **₹21,863**
-
-## Impact
-
-* Improved fleet utilization
-* Higher freight revenue
-* Reduced empty travel
-* Lower carbon emissions
+> **Note:** The backend will be running at `http://localhost:8000`. You can view the API documentation at `http://localhost:8000/docs`.
 
 ---
 
-# Module 2: Track Health Monitoring
+### 4. Frontend Setup (React + Vite PWA)
 
-## Objective
+Open a new terminal window and navigate to the `frontend` folder.
 
-Detect potential track defects using vibration data collected from multiple trains.
+```bash
+# 1. Navigate to frontend directory
+cd frontend
 
-## Model
+# 2. Install dependencies
+npm install
 
-**XGBoost Classifier**
+# 3. Set up environment variables
+echo "VITE_API_URL=http://localhost:8000" > .env
 
-## Inputs
-
-* Vibration Severity
-* GPS Location
-* Historical Defect Records
-* Weather Conditions
-* Train Consensus
-
-## Outputs
-
-* Track Risk Score
-* Inspection Recommendations
-* High-Risk Segment Alerts
-
-## Workflow
-
-```text
-Train A detects anomaly
-          ↓
-GPS location logged
-
-Train B detects anomaly
-          ↓
-Same location confirmed
-
-Train C detects anomaly
-          ↓
-Same location confirmed
-          ↓
-Track Risk Model
-          ↓
-Track Risk Score
+# 4. Start the development server
+npm run dev
 ```
-
-## Example
-
-### Input
-
-```json
-{
-  "vibration_mean": 6.2,
-  "vibration_rms": 5.8,
-  "consensus_count": 4,
-  "historical_defects": 7,
-  "track_age_years": 18,
-  "rainfall": 12
-}
-```
-
-### Output
-
-```json
-{
-  "risk_label": "High",
-  "risk_probability": 67,
-  "inspection_required": true
-}
-```
-
-## Model Performance
-
-* Accuracy: **75.18%**
-* Macro F1 Score: **0.76**
-
-### Risk Classes
-
-* Safe
-* Medium
-* High
-* Critical
-
-## Impact
-
-* Early fault detection
-* Predictive maintenance
-* Reduced false positives
-* Improved railway safety
+> **Note:** The frontend will be running at `http://localhost:5173`. Open this URL in your browser to access the RailGuard AI dashboard.
 
 ---
 
-# Module 3: Rolling Stock Health Monitoring
+## Core Architecture
 
-## Objective
+The platform consists of four core AI modules:
 
-Predict wheel and bearing failures before they cause operational issues.
+### Module 1: Intelligent Rake Reallocation Engine
+**Objective:** Optimize empty rake allocation to maximize revenue, reduce idle time, and minimize empty movement.
+- **Model:** XGBoost Regressor
+- **Impact:** Improved fleet utilization, Higher freight revenue, Reduced empty travel.
 
-## Model
+### Module 2: Track Health Monitoring
+**Objective:** Detect potential track defects using vibration data collected from multiple trains.
+- **Model:** XGBoost Classifier
+- **Impact:** Early fault detection, Predictive maintenance, Reduced false positives.
 
-**XGBoost Classifier**
+### Module 3: Rolling Stock Health Monitoring
+**Objective:** Predict wheel and bearing failures before they cause operational issues.
+- **Model:** XGBoost Classifier
+- **Impact:** Reduced breakdowns, Lower maintenance costs, Increased fleet availability.
 
-## Inputs
-
-* Vibration Data
-* Temperature Data
-* Acoustic Data
-* Maintenance History
-
-## Outputs
-
-* Wheel Health Score
-* Bearing Health Score
-* Rake Health Score
-* Failure Probability
-* Maintenance Recommendation
-
-## Example
-
-### Input
-
-```json
-{
-  "vibration_rms": 0.25,
-  "temperature": 40,
-  "sound_level": 50,
-  "maintenance_days": 10
-}
-```
-
-### Output
-
-```json
-{
-  "wheel_health": 83,
-  "bearing_health": 86,
-  "rake_health_score": 84,
-  "failure_probability": 0,
-  "status": "Healthy"
-}
-```
-
-## Model Performance
-
-* Accuracy: **99.00%**
-* Precision: **98.87%**
-* Recall: **98.31%**
-* F1 Score: **98.59%**
-
-## Impact
-
-* Reduced breakdowns
-* Lower maintenance costs
-* Increased fleet availability
-* Improved operational reliability
+### Module 4: Forward Vision Safety System
+**Objective:** Detect obstacles ahead of the locomotive under various weather and visibility conditions.
+- **Model:** YOLOv11
+- **Impact:** Reduced collision risk, Enhanced night-time visibility.
 
 ---
 
-# Module 4: Forward Vision Safety System
+## Technology Stack
 
-## Objective
+**Frontend**
+- React 19 + Vite
+- Framer Motion (Animations)
+- Recharts (Data Visualization)
+- Vite PWA Plugin (Progressive Web App support)
 
-Detect obstacles ahead of the locomotive under various weather and visibility conditions.
+**Backend & Machine Learning**
+- FastAPI + Uvicorn
+- PostgreSQL + SQLAlchemy
+- XGBoost, Scikit-Learn, Pandas
+- YOLOv11 & OpenCV (Computer Vision)
 
-## Model
-
-**YOLOv11**
-
-## Inputs
-
-* RGB Camera Feed
-* Thermal Camera Feed
-
-## Outputs
-
-* Human Detection
-* Animal Detection
-* Vehicle Detection
-* Obstacle Alerts
-* Risk Assessment
-
-## Workflow
-
-```text
-Camera Feed
-      ↓
- YOLOv11
-      ↓
-Object Detection
-      ↓
-Risk Assessment
-      ↓
-Alert Generation
-```
-
-## Detectable Objects
-
-* Humans
-* Animals
-* Cars
-* Trucks
-* Buses
-* Motorcycles
-* Other obstacles
-
-## Impact
-
-* Reduced collision risk
-* Enhanced night-time visibility
-* Improved operational safety
+**IoT Hardware (Simulated/Supported)**
+- ESP32 + MPU6050 Accelerometer
+- Raspberry Pi 5 + RGB/Thermal Cameras
 
 ---
 
-# API Endpoints
+## Native Mobile Application
 
-## Revenue Prediction
+RailGuard AI is engineered as a fully cross-platform application. Using **Capacitor**, the frontend can be natively compiled and deployed to both Android and iOS devices.
 
-```http
-POST /predict
-```
+1. Install Capacitor dependencies (already included in `package.json`).
+2. Sync the web assets to the native Android/iOS projects:
+   ```bash
+   npx cap sync
+   ```
+3. Run natively on your device or emulator:
+   ```bash
+   npx cap run android
+   # or
+   npx cap run ios
+   ```
 
-## Rolling Stock Health Prediction
-
-```http
-POST /predict-health
-```
-
-## Track Health Prediction
-
-```http
-POST /predict-track
-```
+*(The application also supports standard PWA installation directly from mobile browsers).*
 
 ---
 
-# Technology Stack
-
-## Machine Learning
-
-* XGBoost
-* Scikit-Learn
-* Pandas
-* NumPy
-
-## Computer Vision
-
-* YOLOv11
-* OpenCV
-
-## Backend
-
-* FastAPI
-* Uvicorn
-
-## IoT Hardware
-
-### Track Monitoring
-
-* ESP32
-* MPU6050 Accelerometer
-* GPS Module (NEO-6M)
-
-### Rolling Stock Monitoring
-
-* ESP32
-* MPU6050
-* DS18B20 Temperature Sensor
-* MAX9814 Microphone
-
-### Forward Vision System
-
-* Raspberry Pi 5
-* RGB Camera
-* Thermal Camera
-
-## Communication
-
-* MQTT
-* REST APIs
+## Future Enhancements
+- Full Railway Digital Twin Implementation
+- Real-Time GPS Integration
+- Dynamic Route Optimization
+- Thermal Vision Integration
+- Predictive Congestion Forecasting
+- Edge AI Deployment
 
 ---
-
-# Dashboard Features
-
-## Live Railway Map
-
-* Real-Time Rake Tracking
-* Route Monitoring
-* Track Risk Visualization
-
-## Track Health Layer
-
-* Track Risk Score
-* High-Risk Segments
-* Inspection Alerts
-
-## Rolling Stock Health Layer
-
-* Wheel Health
-* Bearing Health
-* Rake Health Score
-* Maintenance Alerts
-
-## Intelligent Rake Reallocation Layer
-
-* Recommended Cargo
-* Revenue Prediction
-* Empty Distance Saved
-* AI Decision Explanation
-
-## Forward Vision Layer
-
-* Live Camera Feed
-* Obstacle Detection Alerts
-* Risk Notifications
-
-## Sustainability Metrics
-
-* Revenue Saved
-* Empty Distance Avoided
-* CO₂ Emissions Reduced
-
----
-
-# Project Structure
-
-```text
-Far_away/
-│
-├── backend/
-│   ├── app.py
-│   └── requirements.txt
-│
-├── data/
-│   ├── cargo.csv
-│   ├── routes.csv
-│   ├── health.csv
-│   ├── rolling_stock_health.csv
-│   ├── track_health.csv
-│   ├── generate_synthetic_data.py
-│   └── generate_track_health_data.py
-│
-├── model/
-│   ├── train_model.py
-│   ├── predict.py
-│   ├── model.pkl
-│   ├── encoders.pkl
-│   │
-│   ├── train_health_model.py
-│   ├── predict_health.py
-│   ├── rolling_stock_health_model.pkl
-│   │
-│   ├── train_track_model.py
-│   ├── predict_track.py
-│   ├── track_health_model.pkl
-│   └── track_label_encoder.pkl
-│
-├── Yolo_model/
-│
-└── README.md
-```
-
----
-
-# Expected Impact
-
-* Predictive maintenance for tracks and rolling stock
-* Reduced derailment and collision risk
-* Increased freight revenue
-* Reduced empty rake movement
-* Faster inspection prioritization
-* Improved operational efficiency
-* Lower carbon emissions
-
----
-
-# Future Enhancements
-
-* Full Railway Digital Twin Implementation
-* Real-Time GPS Integration
-* Dynamic Route Optimization
-* Thermal Vision Integration
-* ETA Prediction
-* Affected Rake Analysis
-* Predictive Congestion Forecasting
-* Edge AI Deployment
-
----
-
-# Vision
-
-**Building a safer, smarter, and more efficient railway ecosystem through AI, IoT, and predictive intelligence.**
+*Building a safer, smarter, and more efficient railway ecosystem through AI, IoT, and predictive intelligence.*

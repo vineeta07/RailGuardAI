@@ -3,9 +3,15 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      'react-is': 'react-is/cjs/react-is.production.js'
+    }
+  },
   plugins: [
     react(),
     VitePWA({
+
       registerType: 'autoUpdate',
       manifest: {
         name: 'RailGuard AI',
