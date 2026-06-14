@@ -67,10 +67,27 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const updateProfile = (updates) => {
+  const updateProfile = async (updates) => {
     if (!user) return;
-    const updatedUser = { ...user, ...updates };
-    setUser(updatedUser);
+    try {
+      const token = localStorage.getItem('rg-token');
+      const res = await fetch('http://localhost:8000/api/auth/me', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updates)
+      });
+      if (res.ok) {
+        const updatedUser = await res.json();
+        setUser({ ...updatedUser, role: 'Operator' });
+      } else {
+        setUser({ ...user, ...updates });
+      }
+    } catch (e) {
+      setUser({ ...user, ...updates });
+    }
   };
 
   return (
