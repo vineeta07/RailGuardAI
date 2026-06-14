@@ -28,13 +28,13 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 # ── Indian City Coordinates ────────────────────────────────
 
 CITY_COORDS = {
-    "Mumbai":    {"lat": 19.0760, "lng": 72.8777},
+    "Mumbai":    {"lat": 19.10, "lng": 73.20},     # Shifted inland
     "Delhi":     {"lat": 28.7041, "lng": 77.1025},
     "Kolkata":   {"lat": 22.5726, "lng": 88.3639},
     "Chennai":   {"lat": 13.0827, "lng": 80.2707},
-    "Ahmedabad": {"lat": 23.0225, "lng": 72.5714},
+    "Ahmedabad": {"lat": 23.0225, "lng": 73.20},    # Shifted inland to align with Surat
     "Jaipur":    {"lat": 26.9124, "lng": 75.7873},
-    "Surat":     {"lat": 21.1702, "lng": 72.8311},
+    "Surat":     {"lat": 21.1702, "lng": 73.20},    # Shifted inland to align with Mumbai/Ahmedabad
     "Bangalore": {"lat": 12.9716, "lng": 77.5946},
     "Lucknow":   {"lat": 26.8467, "lng": 80.9462},
     "Jharkhand":  {"lat": 23.3441, "lng": 85.3096},
@@ -63,13 +63,74 @@ rakes: list = []
 track_segments: list = []
 forward_vision_alerts: list = [
     {
-        "id": "FV-INIT",
+        "id": "FV-001",
         "timestamp": datetime.now().isoformat(),
         "camera": "CAM-01",
         "risk_level": "LOW RISK",
         "confidence": 0.95,
-        "label": "person",
-        "recommendation": "Monitor distance"
+        "object": "person",
+        "distance_m": 85,
+        "rake_id": "RK-042",
+        "location": "Mumbai Outskirts",
+        "message": "⚡ LOW RISK: PERSON detected 85m ahead",
+        "recommendation": "Monitor distance",
+        "image_base64": None
+    },
+    {
+        "id": "FV-002",
+        "timestamp": (datetime.now() - timedelta(minutes=5)).isoformat(),
+        "camera": "CAM-02",
+        "risk_level": "HIGH",
+        "confidence": 0.88,
+        "object": "car",
+        "distance_m": 12,
+        "rake_id": "RK-012",
+        "location": "Level Crossing 4A",
+        "message": "⚠ HIGH RISK: CAR detected 12m ahead",
+        "recommendation": "Apply emergency brakes",
+        "image_base64": None
+    },
+    {
+        "id": "FV-003",
+        "timestamp": (datetime.now() - timedelta(minutes=15)).isoformat(),
+        "camera": "CAM-03",
+        "risk_level": "MEDIUM",
+        "confidence": 0.72,
+        "object": "animal",
+        "distance_m": 45,
+        "rake_id": "RK-099",
+        "location": "Forest Section B",
+        "message": "⚡ MEDIUM RISK: ANIMAL detected 45m ahead",
+        "recommendation": "Sound horn and reduce speed",
+        "image_base64": None
+    },
+    {
+        "id": "FV-004",
+        "timestamp": (datetime.now() - timedelta(minutes=45)).isoformat(),
+        "camera": "CAM-01",
+        "risk_level": "HIGH",
+        "confidence": 0.91,
+        "object": "boulder",
+        "distance_m": 20,
+        "rake_id": "RK-005",
+        "location": "Mountain Pass",
+        "message": "⚠ HIGH RISK: BOULDER detected 20m ahead",
+        "recommendation": "Immediate halt required",
+        "image_base64": None
+    },
+    {
+        "id": "FV-005",
+        "timestamp": (datetime.now() - timedelta(hours=1)).isoformat(),
+        "camera": "CAM-04",
+        "risk_level": "LOW RISK",
+        "confidence": 0.65,
+        "object": "debris",
+        "distance_m": 150,
+        "rake_id": "RK-110",
+        "location": "Station Approach",
+        "message": "⚡ LOW RISK: DEBRIS detected 150m ahead",
+        "recommendation": "Inform station master",
+        "image_base64": None
     }
 ]
 

@@ -365,6 +365,57 @@ input, select, textarea { font-family: inherit; outline: none; }
 .map-wrap.large { height: calc(100vh - 260px); min-height: 420px; }
 .map-wrap .leaflet-container { width: 100%; height: 100%; background: var(--bg-base); filter: var(--map-tile); }
 
+/* ── Map Legend ────────────────────────────────────────── */
+.map-legend {
+  position: absolute; bottom: 16px; left: 16px; z-index: 1000;
+  background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+  padding: 12px 16px; min-width: 170px;
+  box-shadow: var(--shadow-card);
+}
+[data-theme="light"] .map-legend {
+  background: rgba(255, 255, 255, 0.92);
+}
+.map-legend-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px;
+}
+.map-legend-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; color: var(--text-secondary);
+  padding: 4px 0;
+}
+.map-legend-color {
+  width: 28px; height: 4px; border-radius: 99px; flex-shrink: 0;
+}
+.map-legend-color.high { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
+.map-legend-color.medium { background: #f97316; box-shadow: 0 0 6px rgba(249, 115, 22, 0.4); }
+.map-legend-color.low { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
+.map-legend-desc {
+  font-size: 10px; color: var(--text-muted); line-height: 1.3;
+}
+
+/* ── Map Marker Legend (dot markers) ──────────────────── */
+.map-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  border: 2px solid; box-shadow: 0 0 6px currentColor;
+}
+.map-legend-dot.healthy { background: var(--success); border-color: var(--success); color: var(--success); }
+.map-legend-dot.warning { background: var(--warning); border-color: var(--warning); color: var(--warning); }
+.map-legend-dot.critical { background: var(--danger); border-color: var(--danger); color: var(--danger); }
+
+/* ── Predictor Card Spacing ───────────────────────────── */
+.predictor-card { padding: 20px !important; }
+.predictor-card .form-label { font-size: 11px; margin-bottom: 4px; }
+.predictor-card .form-input {
+  padding: 10px 14px; font-size: 13px;
+}
+.predictor-card .form-row { gap: 16px; margin-bottom: 14px !important; }
+.predictor-card .g-card-head { margin-bottom: 18px; }
+.predictor-card .g-card-title { font-size: 14px; }
+.predictor-card .btn-sm { padding: 7px 14px; font-size: 12px; }
+.predictor-card .btn-primary { padding: 10px 16px; font-size: 13px; margin-top: 10px !important; }
+
 /* Leaflet dark overrides */
 .leaflet-popup-content-wrapper { background: var(--bg-surface) !important; color: var(--text-primary) !important; border-radius: var(--radius-sm) !important; border: 1px solid var(--glass-border) !important; box-shadow: var(--shadow-lg) !important; }
 .leaflet-popup-tip { background: var(--bg-surface) !important; }

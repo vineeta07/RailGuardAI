@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Polyline, Tooltip as LTooltip } from '
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useApi } from '../hooks/useApi';
+import { useTheme } from '../hooks/useTheme';
 import { fetchDigitalTwinState, fetchTrackMapData, fetchDecision } from '../services/api';
 import { MOCK } from '../services/mockData';
 import { healthLabel } from '../utils/formatters';
@@ -14,6 +15,7 @@ function createDotIcon(health) {
 }
 
 export default function NetworkMap() {
+  const { theme } = useTheme();
   const { data: twin, loading } = useApi(fetchDigitalTwinState, MOCK.digitalTwinState, 4000);
   const { data: trackMap } = useApi(fetchTrackMapData, MOCK.trackMapData, 8000);
   const [selected, setSelected] = useState(null);
@@ -44,9 +46,12 @@ export default function NetworkMap() {
           <div className="g-card-title">🗺️ Digital Twin — Live System State</div>
           <span className="g-card-sub">{rakes.length} rakes • {lines.length} segments</span>
         </div>
-        <div className="map-wrap large">
+        <div className="map-wrap" style={{ position: 'relative' }}>
           <MapContainer center={[23.5, 78.5]} zoom={5} style={{ width: '100%', height: '100%' }}>
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='CARTO' />
+            <TileLayer 
+              url={`https://{s}.basemaps.cartocdn.com/${theme === 'dark' ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`} 
+              attribution="CARTO" 
+            />
             {lines.map((l) => (
               <Polyline key={l.id} positions={[l.from, l.to]} pathOptions={{ color: l.color, weight: l.risk_level === 'HIGH' ? 4 : 2.5, opacity: l.risk_level === 'HIGH' ? 0.85 : 0.4, dashArray: l.risk_level === 'HIGH' ? '8 4' : null }}>
                 <LTooltip sticky><span style={{ fontSize: 11 }}>{l.label} — Risk: {Math.round(l.risk_score * 100)}%</span></LTooltip>
@@ -58,6 +63,44 @@ export default function NetworkMap() {
               </Marker>
             ))}
           </MapContainer>
+          {/* Map Legend */}
+          <div className="map-legend">
+            <div className="map-legend-title">Track Segments</div>
+            <div className="map-legend-item">
+              <div className="map-legend-color high" />
+              <div>
+                <div>High Risk</div>
+                <div className="map-legend-desc">Risk ≥ 70% — Inspection needed</div>
+              </div>
+            </div>
+            <div className="map-legend-item">
+              <div className="map-legend-color medium" />
+              <div>
+                <div>Medium Risk</div>
+                <div className="map-legend-desc">Risk 40–70% — Monitor</div>
+              </div>
+            </div>
+            <div className="map-legend-item">
+              <div className="map-legend-color low" />
+              <div>
+                <div>Low Risk</div>
+                <div className="map-legend-desc">Risk &lt; 40% — Normal</div>
+              </div>
+            </div>
+            <div className="map-legend-title" style={{ marginTop: 10 }}>Rake Health</div>
+            <div className="map-legend-item">
+              <div className="map-legend-dot healthy" />
+              <div>Healthy (≥ 80%)</div>
+            </div>
+            <div className="map-legend-item">
+              <div className="map-legend-dot warning" />
+              <div>Warning (50–79%)</div>
+            </div>
+            <div className="map-legend-item">
+              <div className="map-legend-dot critical" />
+              <div>Critical (&lt; 50%)</div>
+            </div>
+          </div>
         </div>
       </motion.div>
 

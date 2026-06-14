@@ -11,11 +11,15 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) { setError('Please fill in all fields'); return; }
-    login(email, password);
-    navigate('/app');
+    try {
+      await login(email, password);
+      navigate('/app');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (

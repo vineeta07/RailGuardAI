@@ -12,11 +12,15 @@ export default function Signup() {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) { setError('Please fill in all fields'); return; }
-    signup(name, email, password);
-    navigate('/app');
+    try {
+      await signup(name, email, password);
+      navigate('/app');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (

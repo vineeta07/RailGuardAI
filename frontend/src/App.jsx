@@ -13,6 +13,8 @@ import Reallocation from './pages/Reallocation';
 import TrackHealth from './pages/TrackHealth';
 import ForwardVision from './pages/ForwardVision';
 
+import Settings from './pages/Settings';
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -33,6 +35,7 @@ export default function App() {
                 <Route path="reallocation" element={<Reallocation />} />
                 <Route path="track-health" element={<TrackHealth />} />
                 <Route path="forward-vision" element={<ForwardVision />} />
+                <Route path="settings" element={<Settings />} />
               </Route>
 
               {/* Fallback */}

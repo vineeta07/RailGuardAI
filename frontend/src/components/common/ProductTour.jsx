@@ -3,20 +3,25 @@ import { Joyride, STATUS } from 'react-joyride';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../hooks/useTheme';
 
+import { useAuth } from '../../hooks/useAuth';
+
 export default function ProductTour() {
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [run, setRun] = useState(false);
 
   useEffect(() => {
-    // Only run the tour if the user hasn't seen it yet
-    const hasSeenTour = localStorage.getItem('hasSeenTour');
+    if (!user) return;
+    // Only run the tour if this specific user hasn't seen it yet
+    const key = `hasSeenTour_${user.email}`;
+    const hasSeenTour = localStorage.getItem(key);
     if (!hasSeenTour) {
       // Small delay to let the dashboard render
       const timer = setTimeout(() => setRun(true), 1000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [user]);
 
   const handleJoyrideCallback = (data) => {
     const { status } = data;
@@ -24,7 +29,9 @@ export default function ProductTour() {
     
     if (finishedStatuses.includes(status)) {
       setRun(false);
-      localStorage.setItem('hasSeenTour', 'true');
+      if (user) {
+        localStorage.setItem(`hasSeenTour_${user.email}`, 'true');
+      }
     }
   };
 
@@ -37,7 +44,7 @@ export default function ProductTour() {
     },
     {
       target: '#railway-map',
-      content: t('This is the Digital Twin Network map. Click on any rake (train) to see its live telemetry and request an AI reallocation decision.'),
+      content: t('This is the Digital Twin Network map. To see real time data, simply click on any rake (train) icon on the map to view its live telemetry.'),
       placement: 'bottom',
     },
     {
@@ -46,13 +53,13 @@ export default function ProductTour() {
       placement: 'bottom',
     },
     {
-      target: '#nav-fleet-triage',
-      content: t('Sort and manage the health of your entire fleet here.'),
+      target: '#nav-track-health',
+      content: t('To use the ML Predictors, navigate to the Track Health page. You can input sensor readings to instantly predict failure probabilities!'),
       placement: 'right',
     },
     {
-      target: '#nav-track-health',
-      content: t('Run predictive machine learning diagnostics on our tracks.'),
+      target: '#nav-fleet-triage',
+      content: t('Sort and manage the health of your entire fleet here. It pulls data directly from our PostgreSQL database.'),
       placement: 'right',
     },
     {

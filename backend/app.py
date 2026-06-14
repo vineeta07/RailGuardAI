@@ -14,11 +14,17 @@ Start with:
 
 import uvicorn
 import os
+import models
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
+from database import engine
+
+# Create all tables in the database
+models.Base.metadata.create_all(bind=engine)
+
 
 # Load .env
 load_dotenv()
@@ -45,6 +51,7 @@ from routers.track_health import router as track_health_router
 from routers.decision_engine import router as decision_router
 from routers.digital_twin import router as digital_twin_router
 from routers.forward_vision import router as forward_vision_router
+from routers.users import router as users_router
 
 # Import Data & Simulation
 
@@ -93,6 +100,7 @@ app.include_router(track_health_router)
 app.include_router(decision_router)
 app.include_router(digital_twin_router)
 app.include_router(forward_vision_router)
+app.include_router(users_router)
 
 
 # ── Startup Event ──────────────────────────────────────────
@@ -104,9 +112,12 @@ def on_startup():
     print("  RailGuard AI — Backend Starting")
     print("=" * 55 + "\n")
 
-    # Load CSV datasets into memory
+    # Initialize Database Tables
+    models.Base.metadata.create_all(bind=engine)
+    
+    # Load CSV datasets into memory for the routers we haven't migrated yet
     load_all_data()
-
+    
     # Start background simulation
     start_simulation()
 

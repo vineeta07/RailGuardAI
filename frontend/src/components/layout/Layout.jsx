@@ -14,6 +14,7 @@ const pageTitles = {
   '/app/reallocation': 'AI Reallocation',
   '/app/track-health': 'Track Health',
   '/app/forward-vision': 'Forward Vision',
+  '/app/settings': 'Account Settings',
 };
 
 export default function Layout() {

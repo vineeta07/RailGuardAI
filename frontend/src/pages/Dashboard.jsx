@@ -8,6 +8,7 @@ import L from 'leaflet';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import 'leaflet/dist/leaflet.css';
 import { useApi } from '../hooks/useApi';
+import { useTheme } from '../hooks/useTheme';
 import { fetchDigitalTwinState, fetchTrackMapData } from '../services/api';
 import { MOCK } from '../services/mockData';
 import { MAP_CONFIG, STATUS_COLORS } from '../utils/constants';
@@ -50,6 +51,7 @@ function createDotIcon(health) {
 }
 
 export default function Dashboard() {
+  const { theme } = useTheme();
   const { data: twin, loading } = useApi(fetchDigitalTwinState, MOCK.digitalTwinState, 4000);
   const { data: trackMap } = useApi(fetchTrackMapData, MOCK.trackMapData, 8000);
 
@@ -121,7 +123,7 @@ export default function Dashboard() {
           <div className="map-wrap">
             <MapContainer center={[23.5, 78.5]} zoom={5} style={{ width: '100%', height: '100%' }} zoomControl={true}>
               <TileLayer
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                url={`https://{s}.basemaps.cartocdn.com/${theme === 'dark' ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`}
                 attribution='&copy; <a href="https://carto.com/">CARTO</a>'
               />
               {rakes.filter(r => r.lat && r.lng).map((rake) => (
