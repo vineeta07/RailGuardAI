@@ -1,4 +1,6 @@
 uvicorn[standard]
+fastapi
+psycopg2-binary
 xgboost
 pandas
 numpy

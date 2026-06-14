@@ -134,7 +134,7 @@ export default function Dashboard() {
             <div className="g-card-title">📊 Fleet Analytics</div>
             <div style={{ display: 'flex', gap: 12 }}>
               <a 
-                href="http://localhost:8000/api/reports/download/docx" 
+                href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/reports/download/docx`}
                 target="_blank" 
                 rel="noreferrer" 
                 className="btn btn-sm" 
@@ -143,7 +143,7 @@ export default function Dashboard() {
                 <FileText size={14} /> Download DOCX
               </a>
               <a 
-                href="http://localhost:8000/api/reports/download/pptx" 
+                href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/reports/download/pptx`}
                 target="_blank" 
                 rel="noreferrer" 
                 className="btn btn-sm" 

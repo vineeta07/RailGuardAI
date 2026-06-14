@@ -18,7 +18,8 @@ export function AuthProvider({ children }) {
     formData.append('username', email); // OAuth2 expects 'username'
     formData.append('password', password);
 
-    const res = await fetch('http://localhost:8000/api/auth/login', {
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const res = await fetch(`${API_BASE}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: formData,
@@ -33,7 +34,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem('rg-token', data.access_token);
     
     // Fetch profile
-    const userRes = await fetch('http://localhost:8000/api/auth/me', {
+    const userRes = await fetch(`${API_BASE}/api/auth/me`, {
       headers: { 'Authorization': `Bearer ${data.access_token}` }
     });
     const userData = await userRes.json();
@@ -44,7 +45,8 @@ export function AuthProvider({ children }) {
   };
 
   const signup = async (name, email, password) => {
-    const res = await fetch('http://localhost:8000/api/auth/register', {
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const res = await fetch(`${API_BASE}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
@@ -71,7 +73,8 @@ export function AuthProvider({ children }) {
     if (!user) return;
     try {
       const token = localStorage.getItem('rg-token');
-      const res = await fetch('http://localhost:8000/api/auth/me', {
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_BASE}/api/auth/me`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
