@@ -138,7 +138,7 @@ export default function Dashboard() {
                 target="_blank" 
                 rel="noreferrer" 
                 className="btn btn-sm" 
-                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, background: 'transparent', border: '1px solid var(--neon)', color: 'var(--neon)', boxShadow: '0 0 8px rgba(74, 222, 128, 0.3)', fontWeight: 600, textDecoration: 'none' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, background: 'transparent', border: '2px solid var(--neon)', color: 'var(--neon)', boxShadow: '4px 4px 0 var(--neon)', fontWeight: 800, textDecoration: 'none', borderRadius: 0 }}
               >
                 <FileText size={14} /> Download DOCX
               </a>
@@ -147,7 +147,7 @@ export default function Dashboard() {
                 target="_blank" 
                 rel="noreferrer" 
                 className="btn btn-sm" 
-                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, background: 'transparent', border: '1px solid var(--cyan)', color: 'var(--cyan)', boxShadow: '0 0 8px rgba(6, 182, 212, 0.3)', fontWeight: 600, textDecoration: 'none' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, background: 'transparent', border: '2px solid var(--cyan)', color: 'var(--cyan)', boxShadow: '4px 4px 0 var(--cyan)', fontWeight: 800, textDecoration: 'none', borderRadius: 0 }}
               >
                 <Presentation size={14} /> Download PPTX
               </a>

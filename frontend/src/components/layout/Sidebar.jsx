@@ -58,7 +58,7 @@ export default function Sidebar({ collapsed, onToggle }) {
             transition: 'all 0.3s ease'
           }} 
         />
-        {!collapsed && <div className="sidebar-brand" style={{ fontSize: '22px', marginLeft: '-20px', zIndex: 10 }}>Rail<span>Guard </span>AI</div>}
+        {!collapsed && <div className="sidebar-brand" style={{ fontSize: '18px', marginLeft: '-20px', zIndex: 10 }}>Rail<span>Guard </span>AI</div>}
       </Link>
 
       {/* Navigation */}

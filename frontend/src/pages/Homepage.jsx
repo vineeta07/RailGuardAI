@@ -1,232 +1,219 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { useTranslation } from 'react-i18next';
 import {
-  Train, Map, Activity, Brain, Eye, Shield,
-  ArrowRight, Sun, Moon, Zap, BarChart3, Leaf, Globe, FileText, Lock
+  Map, Activity, Brain, Eye, Shield,
+  ArrowRight, Sun, Moon, Leaf, Globe, FileText, Lock
 } from 'lucide-react';
 
 const features = [
-  { icon: Map, color: 'var(--accent)', bg: 'var(--accent-dim)', title: 'Digital Twin Network', desc: 'Live geographic visualization of 20+ rakes across the Indian railway network with real-time health monitoring.' },
-  { icon: Brain, color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', title: 'AI Reallocation Engine', desc: 'Hugging Face–powered decision engine that optimizes cargo-rake matching using multi-factor scoring.' },
-  { icon: Activity, color: 'var(--success)', bg: 'var(--success-dim)', title: 'Track Health Monitor', desc: 'ML-based predictive maintenance analyzing vibration, temperature, and sound to prevent derailments.' },
-  { icon: Eye, color: 'var(--danger)', bg: 'var(--danger-dim)', title: 'Forward Vision Safety', desc: 'YOLOv11 object detection for real-time obstacle identification on railway tracks up to 700m ahead.' },
-  { icon: Shield, color: 'var(--cyan)', bg: 'var(--cyan-dim)', title: 'Fleet Triage System', desc: 'Priority-sorted fleet monitoring with critical asset isolation and predictive failure alerting.' },
-  { icon: Leaf, color: 'var(--success)', bg: 'var(--success-dim)', title: 'Sustainability Impact', desc: 'Track CO₂ savings, empty-km avoidance, and revenue optimization in real-time.' },
-  { icon: Eye, color: 'var(--accent)', bg: 'var(--accent-dim)', title: 'Multilingual Support', desc: 'Full multilingual interface localized for diverse railway operations and staff across regions.' },
-  { icon: FileText, color: 'var(--neon)', bg: 'rgba(74, 222, 128, 0.12)', title: 'Automated Reporting Agent', desc: 'Background Python daemon generating formatted DOCX and PPTX slide decks summarizing fleet status.' },
-  { icon: Lock, color: 'var(--warning)', bg: 'var(--warning-dim)', title: 'Secure Authentication', desc: 'Encrypted JWT-based access control protecting critical command center infrastructure.' },
+  { icon: Map, color: 'var(--accent)', title: 'DIGITAL TWIN NETWORK', desc: 'Live geographic visualization of 20+ rakes across the Indian railway network with real-time health monitoring.' },
+  { icon: Brain, color: '#a78bfa', title: 'AI REALLOCATION', desc: 'Hugging Face–powered decision engine that optimizes cargo-rake matching using multi-factor scoring.' },
+  { icon: Activity, color: 'var(--success)', title: 'TRACK HEALTH', desc: 'ML-based predictive maintenance analyzing vibration, temperature, and sound to prevent derailments.' },
+  { icon: Eye, color: 'var(--danger)', title: 'FORWARD VISION', desc: 'YOLOv11 object detection for real-time obstacle identification on railway tracks up to 700m ahead.' },
+  { icon: Shield, color: 'var(--cyan)', title: 'FLEET TRIAGE', desc: 'Priority-sorted fleet monitoring with critical asset isolation and predictive failure alerting.' },
+  { icon: Leaf, color: 'var(--success)', title: 'SUSTAINABILITY', desc: 'Track CO₂ savings, empty-km avoidance, and revenue optimization in real-time.' },
+  { icon: Globe, color: 'var(--accent)', title: 'MULTILINGUAL', desc: 'Full multilingual interface localized for diverse railway operations and staff across regions.' },
+  { icon: FileText, color: 'var(--neon)', title: 'AUTOMATED REPORTS', desc: 'Background Python daemon generating formatted DOCX and PPTX slide decks summarizing fleet status.' },
+  { icon: Lock, color: 'var(--warning)', title: 'SECURE AUTH', desc: 'Encrypted JWT-based access control protecting critical command center infrastructure.' },
 ];
-
-const stats = [
-  { value: '₹1.24Cr', label: 'Revenue Saved' },
-  { value: '8,520', label: 'Empty KM Avoided' },
-  { value: '48.7T', label: 'CO₂ Reduced' },
-  { value: '142', label: 'AI Decisions' },
-];
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-});
 
 export default function Homepage() {
   const { theme, toggle } = useTheme();
   const { i18n } = useTranslation();
+  const { scrollYProgress } = useScroll();
+  
+  // Scroll-driven motion for the right-side hero element
+  const yPos = useTransform(scrollYProgress, [0, 1], [0, 300]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 15]);
 
   return (
-    <div style={{ background: 'var(--bg-base)', minHeight: '100vh' }}>
-      {/* Top bar */}
+    <div style={{ background: 'var(--bg-base)', minHeight: '100vh', fontFamily: "'Space Mono', monospace" }}>
+      {/* Brutalist Top Bar */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '12px 32px', background: 'var(--bg-surface)', borderBottom: '1px solid var(--border)',
-        backdropFilter: 'blur(12px)',
+        padding: '16px 32px', background: 'var(--bg-base)', 
+        borderBottom: '2px solid var(--text-primary)',
       }}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none', color: 'inherit' }}>
-          <img src="/logo.png" alt="RailGuard Logo" style={{ height: 50, objectFit: 'contain', zIndex: 10 }} />
-          <div style={{ fontSize: '20px', fontWeight: 700, marginLeft: '-12px', zIndex: 10 }}>Rail<span style={{ color: 'var(--accent)' }}>Guard </span>AI</div>
+          <img src="/logo.png" alt="RailGuard Logo" style={{ height: 100, objectFit: 'contain', zIndex: 10 }} />
+          <div style={{ fontSize: '24px', fontWeight: 700, zIndex: 10, fontFamily: "'Playfair Display', serif", textTransform: 'uppercase', letterSpacing: '-1px' }}>
+            Rail<span style={{ color: 'var(--accent)' }}>Guard </span>AI
+          </div>
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: 6, border: '1px solid var(--border)', marginRight: 8 }}>
-            <Globe size={14} style={{ color: 'var(--text-muted)' }}/>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '2px solid var(--text-primary)', padding: '4px 12px', background: 'var(--bg-surface)' }}>
+            <Globe size={16} />
             <select 
               value={i18n.language} 
               onChange={(e) => i18n.changeLanguage(e.target.value)}
-              style={{ background: 'transparent', border: 'none', color: 'var(--text-color)', fontSize: 13, outline: 'none', cursor: 'pointer' }}
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', fontSize: 14, outline: 'none', cursor: 'pointer', fontWeight: 700, textTransform: 'uppercase' }}
             >
-              <option value="en">Eng</option>
-              <option value="hi">हिंदी</option>
-              <option value="bn">বাংলা</option>
-              <option value="ta">தமிழ்</option>
+              <option value="en">ENG</option>
+              <option value="hi">HIN</option>
+              <option value="bn">BEN</option>
+              <option value="ta">TAM</option>
             </select>
           </div>
-          <button className="theme-toggle" onClick={toggle} title="Toggle theme">
-            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          <button onClick={toggle} title="Toggle theme" style={{ border: '2px solid var(--text-primary)', padding: '8px', background: 'var(--bg-surface)', color: 'var(--text-primary)', display: 'flex' }}>
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Link to="/login" className="btn btn-ghost btn-sm">Sign In</Link>
-          <Link to="/signup" className="btn btn-primary btn-sm">Get Started</Link>
+          <Link to="/login" style={{ border: '2px solid var(--text-primary)', padding: '8px 24px', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none' }}>Login</Link>
+          <Link to="/signup" style={{ border: '2px solid var(--text-primary)', padding: '8px 24px', background: 'var(--accent)', color: '#fff', fontWeight: 700, textTransform: 'uppercase', textDecoration: 'none', boxShadow: '4px 4px 0 var(--text-primary)' }}>Enter System</Link>
         </div>
       </div>
 
-      {/* Hero */}
-      <section className="landing-hero">
+      {/* Split-Screen Hero */}
+      <section style={{ display: 'flex', minHeight: '100vh', paddingTop: '75px', borderBottom: '2px solid var(--text-primary)' }}>
+        {/* Left Side: Raw Typography */}
+        <div style={{ flex: 1, padding: '8% 5% 15% 5%', borderRight: '2px solid var(--text-primary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <motion.h1 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{ 
+              fontFamily: "'Playfair Display', serif", 
+              fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', 
+              lineHeight: '0.9', 
+              fontWeight: 900, 
+              textTransform: 'uppercase',
+              margin: '0 0 40px 0',
+              letterSpacing: '-2px',
+              color: 'var(--text-primary)'
+            }}
+          >
+            Railway Operations, 
+            Awakened.<br/>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ fontSize: '18px', maxWidth: '600px', lineHeight: '1.6', marginBottom: '48px', color: 'var(--text-secondary)' }}
+          >
+            Orchestrating the future of the supply chain. RailGuard is a unified intelligence layer that turns live track data and forward vision safety feeds into instant, revenue driving decisions.
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Link to="/signup" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, border: '2px solid var(--text-primary)', padding: '16px 32px', background: 'var(--text-primary)', color: 'var(--bg-base)', fontSize: '20px', fontWeight: 800, textTransform: 'uppercase', textDecoration: 'none', boxShadow: '8px 8px 0 var(--accent)' }}>
+              Launch Dashboard <ArrowRight size={24} />
+            </Link>
+          </motion.div>
+        </div>
 
-        <motion.h1 className="landing-h1" {...fadeUp(0.1)}>
-          Intelligent Railway <span>Command Center</span>
-        </motion.h1>
-
-        <motion.p className="landing-p" {...fadeUp(0.2)}>
-          RailGuard AI combines digital twin technology, predictive ML models, and real-time computer vision 
-          to optimize freight operations. We utilize state-of-the-art Hugging Face models for dynamic reallocation, 
-          YOLOv11 for millimeter-accurate forward vision obstacle detection, and custom ensemble learning for track 
-          health prognostics. Our neural networks continuously process live telemetry to prevent failures and save 
-          millions in operational costs.
-        </motion.p>
-
-        <motion.div className="landing-btns" {...fadeUp(0.3)}>
-          <Link to="/signup" className="btn btn-primary" style={{ padding: '12px 28px', fontSize: 14 }}>
-            Launch Dashboard <ArrowRight size={16} />
-          </Link>
-          <Link to="/login" className="btn btn-ghost" style={{ padding: '12px 28px', fontSize: 14 }}>
-            Sign In
-          </Link>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div className="landing-stats" {...fadeUp(0.45)}>
-          {stats.map((s) => (
-            <div key={s.label} style={{ textAlign: 'center' }}>
-              <div className="landing-stat-num">{s.value}</div>
-              <div className="landing-stat-label">{s.label}</div>
+        {/* Right Side: Scroll-Driven Asymmetric Visual */}
+        <div style={{ flex: 1, background: 'var(--bg-surface)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {/* A brutalist structural element that responds to scroll */}
+          <motion.div 
+            style={{ 
+              width: '75%', 
+              background: 'var(--accent)', 
+              border: '4px solid var(--text-primary)', 
+              boxShadow: '16px 16px 0 var(--text-primary)',
+              y: yPos,
+              rotate: rotate,
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px',
+              position: 'relative'
+            }}
+          >
+            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--bg-base)', borderBottom: '2px solid var(--bg-base)', paddingBottom: '8px', marginBottom: '8px' }}>
+              SYSTEM ARCHITECTURE_
             </div>
-          ))}
-        </motion.div>
+            {[
+              "Track Sensors",
+              "+ Rolling Stock Sensors",
+              "+ Forward Vision Cameras",
+              "+ GPS Tracking",
+              "          ↓",
+              "   Data Collection Layer",
+              "          ↓",
+              "        Backend",
+              "          ↓",
+              "      AI Models",
+              "          ↓",
+              "   Decision Engine",
+              "          ↓",
+              "Dashboard & Visualization",
+              "          ↓",
+              " Alerts & Recommendations"
+            ].map((step, idx) => (
+              <div key={idx} style={{ fontFamily: "'Space Mono', monospace", fontSize: '14px', fontWeight: 800, color: 'var(--bg-base)', whiteSpace: 'pre' }}>
+                {step}
+              </div>
+            ))}
+          </motion.div>
+          {/* Decorative grid lines */}
+          <div style={{ position: 'absolute', top: '20%', left: 0, width: '100%', height: '2px', background: 'var(--text-primary)', opacity: 0.2 }} />
+          <div style={{ position: 'absolute', top: '80%', left: 0, width: '100%', height: '2px', background: 'var(--text-primary)', opacity: 0.2 }} />
+          <div style={{ position: 'absolute', top: 0, left: '20%', width: '2px', height: '100%', background: 'var(--text-primary)', opacity: 0.2 }} />
+        </div>
       </section>
 
-      {/* Features */}
-      <section style={{ padding: '40px 24px 60px', maxWidth: 1100, margin: '0 auto' }}>
-        <motion.h2
-          style={{ fontSize: 28, fontWeight: 700, textAlign: 'center', marginBottom: 8 }}
-          {...fadeUp(0)}
-        >
-          Four AI Modules, <span style={{ color: 'var(--accent)' }}>One Platform</span>
-        </motion.h2>
-        <motion.p
-          style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: 15, marginBottom: 40, maxWidth: 520, margin: '0 auto 40px' }}
-          {...fadeUp(0.05)}
-        >
-          Each module is independently trained and deployed, unified through a single command center interface.
-        </motion.p>
+      {/* Brutalist Stats Strip */}
+      <section style={{ display: 'flex', borderBottom: '2px solid var(--text-primary)', background: 'var(--accent)' }}>
+        {[
+          { v: '₹1.24Cr', l: 'REVENUE SAVED' },
+          { v: '8,520', l: 'EMPTY KM' },
+          { v: '48.7T', l: 'CO2 REDUCED' },
+          { v: '142', l: 'AI DECISIONS' }
+        ].map((s, i) => (
+          <div key={i} style={{ flex: 1, padding: '32px 24px', borderRight: i !== 3 ? '2px solid var(--text-primary)' : 'none', textAlign: 'center', color: 'var(--bg-base)' }}>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '48px', fontWeight: 900, lineHeight: 1 }}>{s.v}</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, marginTop: '8px' }}>{s.l}</div>
+          </div>
+        ))}
+      </section>
 
-        <div className="landing-features">
+      {/* Raw Asymmetric Grid Features */}
+      <section style={{ padding: '100px 5%', background: 'var(--bg-base)' }}>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '56px', fontWeight: 900, textTransform: 'uppercase', borderBottom: '4px solid var(--text-primary)', paddingBottom: '24px', marginBottom: '64px' }}>
+          SYSTEM CAPABILITIES.
+        </h2>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
           {features.map((f, i) => {
             const Icon = f.icon;
             return (
               <motion.div
                 key={f.title}
-                className="landing-feat"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                style={{ 
+                  border: '2px solid var(--text-primary)', 
+                  background: 'var(--bg-surface)', 
+                  padding: '32px',
+                  boxShadow: `8px 8px 0 ${f.color}`
+                }}
               >
-                <div className="landing-feat-icon" style={{ background: f.bg, color: f.color }}>
-                  <Icon size={20} />
+                <div style={{ borderBottom: '2px solid var(--text-primary)', paddingBottom: '16px', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 800 }}>{f.title}</h3>
+                  <Icon size={28} color={f.color} />
                 </div>
-                <div className="landing-feat-title">{f.title}</div>
-                <div className="landing-feat-desc">{f.desc}</div>
+                <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                  {f.desc}
+                </p>
               </motion.div>
             );
           })}
         </div>
       </section>
 
-      {/* Architecture */}
-      <section style={{ padding: '80px 24px', background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <motion.h2 style={{ fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 12 }} {...fadeUp()}>
-            System <span style={{ color: 'var(--accent)' }}>Architecture</span>
-          </motion.h2>
-          <motion.p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: 16, marginBottom: 56, maxWidth: 600, margin: '0 auto 56px' }} {...fadeUp(0.1)}>
-            A fully integrated pipeline going from edge-device raw telemetry to actionable AI-driven decisions and automated enterprise reporting.
-          </motion.p>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
-            
-            {/* Layer 1 */}
-            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.15)}>
-              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--accent-dim)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Activity size={32} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>1. Data Collection Layer</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>IoT Telemetry (Vibration, Temperature), GPS Tracking, and Forward Vision Camera Feeds from moving rakes.</p>
-              </div>
-            </motion.div>
-
-            <div style={{ width: 2, height: 24, background: 'linear-gradient(to bottom, var(--accent), var(--border))' }} />
-
-            {/* Layer 2 */}
-            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.2)}>
-              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--success-dim)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Brain size={32} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>2. AI & Processing Engine</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>FastAPI Backend running YOLOv11 for obstacles, Scikit-learn Random Forests for health prognostics, and Hugging Face NLP for automated triage.</p>
-              </div>
-            </motion.div>
-
-            <div style={{ width: 2, height: 24, background: 'linear-gradient(to bottom, var(--success), var(--border))' }} />
-
-            {/* Layer 3 */}
-            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.25)}>
-              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--cyan-dim)', color: 'var(--cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Map size={32} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>3. Command Center & Visualization</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>React 19 Dashboard rendering the live Digital Twin map, predictive fleet health KPI charts, and AI reallocation workflows.</p>
-              </div>
-            </motion.div>
-
-            <div style={{ width: 2, height: 24, background: 'linear-gradient(to bottom, var(--cyan), var(--border))' }} />
-
-            {/* Layer 4 */}
-            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.3)}>
-              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--warning-dim)', color: 'var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <FileText size={32} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>4. Autonomous Enterprise Reporting</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>A dedicated background agent dynamically generates formatted .DOCX executive summaries and .PPTX presentation slide decks instantly.</p>
-              </div>
-            </motion.div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section style={{ padding: '64px 24px', textAlign: 'center' }}>
-        <motion.h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 12 }} {...fadeUp()}>
-          Ready to Transform Railway Operations?
-        </motion.h2>
-        <motion.p style={{ color: 'var(--text-secondary)', marginBottom: 28, fontSize: 15 }} {...fadeUp(0.05)}>
-          Deploy the future of intelligent freight management.
-        </motion.p>
-        <motion.div {...fadeUp(0.1)}>
-          <Link to="/signup" className="btn btn-primary" style={{ padding: '14px 36px', fontSize: 15 }}>
-            Get Started <ArrowRight size={16} />
-          </Link>
-        </motion.div>
-      </section>
-
-      <div className="landing-footer">
-        © 2026 RailGuard AI — Built with ❤️ by Team
-      </div>
+      {/* Brutalist Footer */}
+      <footer style={{ borderTop: '4px solid var(--text-primary)', padding: '40px 5%', background: 'var(--text-primary)', color: 'var(--bg-base)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '32px', fontWeight: 900 }}>RAILGUARD AI</div>
+        <div style={{ fontSize: '14px', fontWeight: 700 }}>© 2026 // END OF TRANSMISSION</div>
+      </footer>
     </div>
   );
 }

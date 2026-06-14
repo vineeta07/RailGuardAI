@@ -24,6 +24,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 # Pydantic schema for registration
 class UserCreate(BaseModel):
+    name: str | None = None
     email: str
     password: str
 
@@ -33,6 +34,7 @@ class Token(BaseModel):
 
 class UserResponse(BaseModel):
     id: int
+    name: str | None = None
     email: str
     is_active: int
 
@@ -69,8 +71,8 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
         
     # Hash the password and save
-    hashed_password = get_password_hash(user.password)
-    db_user = models.User(email=user.email, hashed_password=hashed_password)
+    hashed_pw = get_password_hash(user.password)
+    db_user = models.User(name=user.name, email=user.email, hashed_password=hashed_pw)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

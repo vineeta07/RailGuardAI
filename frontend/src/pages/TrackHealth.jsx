@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapContainer, TileLayer, Polyline, Tooltip as LTooltip } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import { Shield, AlertTriangle, MapPin } from 'lucide-react';
+import { Shield, AlertTriangle } from 'lucide-react';
 import { useApi } from '../hooks/useApi';
 import { useTheme } from '../hooks/useTheme';
 import { fetchTrackHealth, fetchTrackAlerts, fetchTrackMapData, predictHealth, predictTrack } from '../services/api';
@@ -13,7 +10,8 @@ export default function TrackHealth() {
   const { theme } = useTheme();
   const { data: trackData, loading } = useApi(fetchTrackHealth, MOCK.trackHealth, 5000);
   const { data: alerts } = useApi(fetchTrackAlerts, MOCK.trackAlerts, 5000);
-  const { data: mapData } = useApi(fetchTrackMapData, MOCK.trackMapData, 8000);
+  
+  const [filterRisk, setFilterRisk] = useState('ALL');
 
   /* Rolling Stock Health Form */
   const [form, setForm] = useState({ vibration_rms: 0.35, temperature: 55, sound_level: 60, maintenance_days: 30 });
@@ -44,8 +42,6 @@ export default function TrackHealth() {
   if (loading || !trackData) return <div className="spinner-wrap"><div className="spinner" /><div className="spinner-text">Loading Track Health...</div></div>;
 
   const segments = trackData.segments || [];
-  const alertList = alerts?.alerts || [];
-  const trackLines = mapData?.lines || [];
 
   return (
     <>
@@ -60,73 +56,8 @@ export default function TrackHealth() {
           <div><div className="kpi-label">High Risk</div><div className="kpi-value" style={{ fontFamily: 'var(--mono)' }}>{trackData.high_risk_count || 0}</div></div>
         </div>
         <div className="kpi-card">
-          <div className="kpi-icon orange"><MapPin size={18} /></div>
-          <div><div className="kpi-label">Alert Segments</div><div className="kpi-value" style={{ fontFamily: 'var(--mono)' }}>{alertList.length}</div></div>
-        </div>
-      </div>
-
-      <div className="bento" style={{ gridTemplateColumns: '5fr 4fr', marginBottom: 16 }}>
-        {/* Track Map */}
-        <motion.div className="g-card" style={{ padding: 0, overflow: 'hidden', position: 'relative' }} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border)' }}>
-            <div className="g-card-title">🗺️ Track Health Map</div>
-          </div>
-          <div className="map-wrap" style={{ position: 'relative', height: 400 }}>
-            <MapContainer center={[23.5, 78.5]} zoom={5} style={{ width: '100%', height: '100%' }}>
-              <TileLayer 
-                url={`https://{s}.basemaps.cartocdn.com/${theme === 'dark' ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`} 
-                attribution="CARTO" 
-              />
-              {trackLines.map((l) => (
-                <Polyline key={l.id} positions={[l.from, l.to]} pathOptions={{ color: l.color, weight: l.risk_level === 'HIGH' ? 4 : 2.5, opacity: l.risk_level === 'HIGH' ? 0.85 : 0.4, dashArray: l.risk_level === 'HIGH' ? '8 4' : null }}>
-                  <LTooltip sticky><span style={{ fontSize: 11 }}>{l.label} — Risk: {Math.round(l.risk_score * 100)}%</span></LTooltip>
-                </Polyline>
-              ))}
-            </MapContainer>
-            {/* Map Legend */}
-            <div className="map-legend">
-              <div className="map-legend-title">Track Risk Level</div>
-              <div className="map-legend-item">
-                <div className="map-legend-color high" />
-                <div>
-                  <div>High Risk</div>
-                  <div className="map-legend-desc">Risk ≥ 70% — Immediate inspection needed</div>
-                </div>
-              </div>
-              <div className="map-legend-item">
-                <div className="map-legend-color medium" />
-                <div>
-                  <div>Medium Risk</div>
-                  <div className="map-legend-desc">Risk 40–70% — Monitor closely</div>
-                </div>
-              </div>
-              <div className="map-legend-item">
-                <div className="map-legend-color low" />
-                <div>
-                  <div>Low Risk</div>
-                  <div className="map-legend-desc">Risk &lt; 40% — Safe for operation</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Right Stack: Alerts */}
-        <div className="bento-stack">
-          <motion.div className="g-card" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} style={{ height: '100%' }}>
-            <div className="g-card-head">
-              <div className="g-card-title">⚠️ High-Risk Alerts</div>
-            </div>
-            <div className="triage-feed" style={{ maxHeight: 'calc(100% - 40px)' }}>
-              {alertList.length === 0 && <div style={{ padding: 16, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>No high-risk alerts</div>}
-              {alertList.slice(0, 6).map((a) => (
-                <div key={a.segment_id} className="triage-item critical" style={{ marginBottom: 8 }}>
-                  <div style={{ fontWeight: 600, fontSize: 12 }}>{a.source} → {a.destination}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Risk: {Math.round(a.risk_score * 100)}% • {a.distance_km} km</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+          <div className="kpi-icon green" style={{ color: 'var(--success)' }}><Shield size={18} /></div>
+          <div><div className="kpi-label">Low Risk</div><div className="kpi-value" style={{ fontFamily: 'var(--mono)' }}>{segments.filter(s => s.risk_level === 'LOW').length}</div></div>
         </div>
       </div>
 
@@ -252,8 +183,18 @@ export default function TrackHealth() {
 
       {/* Segments Table */}
       <motion.div className="g-card" style={{ marginTop: 16 }} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-        <div className="g-card-head">
-          <div className="g-card-title">📋 All Track Segments</div>
+        <div className="g-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="g-card-title">📋 Track Segments</div>
+          <select 
+            value={filterRisk} 
+            onChange={e => setFilterRisk(e.target.value)}
+            style={{ padding: '4px 8px', border: '2px solid var(--text-primary)', background: 'var(--bg-base)', color: 'var(--text-primary)', fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 700 }}
+          >
+            <option value="ALL">ALL RISKS</option>
+            <option value="HIGH">HIGH RISK</option>
+            <option value="MEDIUM">MEDIUM RISK</option>
+            <option value="LOW">LOW RISK</option>
+          </select>
         </div>
         <div style={{ overflowX: 'auto' }}>
           <table className="dtable">
@@ -263,7 +204,7 @@ export default function TrackHealth() {
               </tr>
             </thead>
             <tbody>
-              {segments.map((s) => (
+              {(filterRisk === 'ALL' ? segments : segments.filter(s => s.risk_level === filterRisk)).map((s) => (
                 <tr key={s.segment_id}>
                   <td style={{ fontFamily: 'var(--mono)', fontWeight: 600, fontSize: 11 }}>{s.segment_id}</td>
                   <td>{s.source} → {s.destination}</td>
