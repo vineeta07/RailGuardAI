@@ -94,6 +94,7 @@ body {
 a { color: var(--accent); text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 input, select, textarea { font-family: inherit; outline: none; }
+select option { background: var(--bg-surface); color: var(--text-primary); }
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 99px; opacity: 0.5; }
@@ -677,6 +678,11 @@ input, select, textarea { font-family: inherit; outline: none; }
   .header-pill { padding: 4px 8px; font-size: 10px; }
   
   .auth-logo img { width: 48px !important; height: 48px !important; }
+  
+  /* Map adjustments */
+  .map-wrap { height: 300px; }
+  .map-wrap.large { height: 400px; }
+  .map-legend { display: none; }
   
   /* Auth Pages Mobile */
   .auth-card { padding: 24px 20px; margin: 0 10px; }
