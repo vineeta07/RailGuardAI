@@ -10,7 +10,7 @@ const sections = [
   {
     label: 'Command',
     items: [
-      { label: 'Overview', to: '/app', icon: LayoutDashboard },
+      { label: 'Dashboard', to: '/app', icon: LayoutDashboard },
       { label: 'Network Map', to: '/app/network-map', icon: Map },
     ],
   },

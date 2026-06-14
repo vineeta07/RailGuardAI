@@ -4,7 +4,7 @@ import { useTheme } from '../hooks/useTheme';
 import { useTranslation } from 'react-i18next';
 import {
   Train, Map, Activity, Brain, Eye, Shield,
-  ArrowRight, Sun, Moon, Zap, BarChart3, Leaf, Globe
+  ArrowRight, Sun, Moon, Zap, BarChart3, Leaf, Globe, FileText, Lock
 } from 'lucide-react';
 
 const features = [
@@ -15,6 +15,8 @@ const features = [
   { icon: Shield, color: 'var(--cyan)', bg: 'var(--cyan-dim)', title: 'Fleet Triage System', desc: 'Priority-sorted fleet monitoring with critical asset isolation and predictive failure alerting.' },
   { icon: Leaf, color: 'var(--success)', bg: 'var(--success-dim)', title: 'Sustainability Impact', desc: 'Track CO₂ savings, empty-km avoidance, and revenue optimization in real-time.' },
   { icon: Eye, color: 'var(--accent)', bg: 'var(--accent-dim)', title: 'Multilingual Support', desc: 'Full multilingual interface localized for diverse railway operations and staff across regions.' },
+  { icon: FileText, color: 'var(--neon)', bg: 'rgba(74, 222, 128, 0.12)', title: 'Automated Reporting Agent', desc: 'Background Python daemon generating formatted DOCX and PPTX slide decks summarizing fleet status.' },
+  { icon: Lock, color: 'var(--warning)', bg: 'var(--warning-dim)', title: 'Secure Authentication', desc: 'Encrypted JWT-based access control protecting critical command center infrastructure.' },
 ];
 
 const stats = [
@@ -43,10 +45,10 @@ export default function Homepage() {
         padding: '12px 32px', background: 'var(--bg-surface)', borderBottom: '1px solid var(--border)',
         backdropFilter: 'blur(12px)',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div className="sidebar-logo"><Train size={16} /></div>
-          <span style={{ fontSize: 16, fontWeight: 700 }}>Rail<span style={{ color: 'var(--accent)' }}>Guard</span> AI</span>
-        </div>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none', color: 'inherit' }}>
+          <img src="/logo.png" alt="RailGuard Logo" style={{ height: 50, objectFit: 'contain', zIndex: 10 }} />
+          <div style={{ fontSize: '20px', fontWeight: 700, marginLeft: '-12px', zIndex: 10 }}>Rail<span style={{ color: 'var(--accent)' }}>Guard </span>AI</div>
+        </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: 6, border: '1px solid var(--border)', marginRight: 8 }}>
             <Globe size={14} style={{ color: 'var(--text-muted)' }}/>
@@ -142,24 +144,68 @@ export default function Homepage() {
       </section>
 
       {/* Architecture */}
-      <section style={{ padding: '48px 24px', background: 'var(--bg-surface)', borderTop: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
-          <motion.h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }} {...fadeUp()}>
-            Tech Stack
+      <section style={{ padding: '80px 24px', background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <motion.h2 style={{ fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 12 }} {...fadeUp()}>
+            System <span style={{ color: 'var(--accent)' }}>Architecture</span>
           </motion.h2>
-          <motion.div
-            style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginTop: 20 }}
-            {...fadeUp(0.1)}
-          >
-            {['React 19', 'Vite', 'FastAPI', 'Leaflet.js', 'Recharts', 'Framer Motion', 'YOLOv11', 'Scikit-learn', 'Hugging Face', 'Capacitor'].map(t => (
-              <span key={t} style={{
-                padding: '6px 16px', borderRadius: 99, border: '1px solid var(--border)',
-                fontSize: 12, fontWeight: 500, background: 'var(--bg-card)', color: 'var(--text-secondary)'
-              }}>
-                {t}
-              </span>
-            ))}
-          </motion.div>
+          <motion.p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: 16, marginBottom: 56, maxWidth: 600, margin: '0 auto 56px' }} {...fadeUp(0.1)}>
+            A fully integrated pipeline going from edge-device raw telemetry to actionable AI-driven decisions and automated enterprise reporting.
+          </motion.p>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
+            
+            {/* Layer 1 */}
+            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.15)}>
+              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--accent-dim)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Activity size={32} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>1. Data Collection Layer</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>IoT Telemetry (Vibration, Temperature), GPS Tracking, and Forward Vision Camera Feeds from moving rakes.</p>
+              </div>
+            </motion.div>
+
+            <div style={{ width: 2, height: 24, background: 'linear-gradient(to bottom, var(--accent), var(--border))' }} />
+
+            {/* Layer 2 */}
+            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.2)}>
+              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--success-dim)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Brain size={32} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>2. AI & Processing Engine</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>FastAPI Backend running YOLOv11 for obstacles, Scikit-learn Random Forests for health prognostics, and Hugging Face NLP for automated triage.</p>
+              </div>
+            </motion.div>
+
+            <div style={{ width: 2, height: 24, background: 'linear-gradient(to bottom, var(--success), var(--border))' }} />
+
+            {/* Layer 3 */}
+            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.25)}>
+              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--cyan-dim)', color: 'var(--cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Map size={32} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>3. Command Center & Visualization</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>React 19 Dashboard rendering the live Digital Twin map, predictive fleet health KPI charts, and AI reallocation workflows.</p>
+              </div>
+            </motion.div>
+
+            <div style={{ width: 2, height: 24, background: 'linear-gradient(to bottom, var(--cyan), var(--border))' }} />
+
+            {/* Layer 4 */}
+            <motion.div style={{ width: '100%', maxWidth: 700, padding: 24, background: 'var(--bg-surface)', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-card)', display: 'flex', alignItems: 'center', gap: 24 }} {...fadeUp(0.3)}>
+              <div style={{ width: 64, height: 64, borderRadius: 12, background: 'var(--warning-dim)', color: 'var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <FileText size={32} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>4. Autonomous Enterprise Reporting</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>A dedicated background agent dynamically generates formatted .DOCX executive summaries and .PPTX presentation slide decks instantly.</p>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 

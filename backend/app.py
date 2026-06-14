@@ -18,6 +18,7 @@ import models
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from database import engine
@@ -144,6 +145,29 @@ def home():
         ],
         "docs": "/docs",
     }
+
+
+# ── Reports Endpoint ───────────────────────────────────────
+
+@app.get("/api/reports/download/{file_type}")
+def download_report(file_type: str):
+    import reporting_agent
+    from datetime import datetime
+    
+    # Generate fresh reports
+    reporting_agent.generate_reports()
+    
+    date_str = datetime.now().strftime("%Y%m%d")
+    if file_type == "docx":
+        path = f"outputs/Fleet_Analysis_Report_{date_str}.docx"
+    elif file_type == "pptx":
+        path = f"outputs/Fleet_Presentation_{date_str}.pptx"
+    else:
+        raise HTTPException(status_code=400, detail="Invalid file type")
+    
+    if os.path.exists(path):
+        return FileResponse(path, filename=os.path.basename(path))
+    raise HTTPException(status_code=404, detail="Report not found")
 
 
 # ════════════════════════════════════════════════════════════

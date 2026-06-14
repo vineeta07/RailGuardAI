@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  HeartPulse, Route, IndianRupee, AlertTriangle, TrendingUp
+  HeartPulse, Route, IndianRupee, AlertTriangle, TrendingUp, Download, FileText, Presentation
 } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup, Tooltip as LeafletTooltip } from 'react-leaflet';
-import L from 'leaflet';
-import { LineChart, Line, ResponsiveContainer } from 'recharts';
-import 'leaflet/dist/leaflet.css';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell, LineChart, Line
+} from 'recharts';
 import { useApi } from '../hooks/useApi';
 import { useTheme } from '../hooks/useTheme';
-import { fetchDigitalTwinState, fetchTrackMapData } from '../services/api';
+import { fetchDigitalTwinState } from '../services/api';
 import { MOCK } from '../services/mockData';
-import { MAP_CONFIG, STATUS_COLORS } from '../utils/constants';
+import { STATUS_COLORS } from '../utils/constants';
 import { healthLabel, timeAgo } from '../utils/formatters';
 
 /* ── Animated Counter (Phase 8) ─────────────────────────── */
@@ -39,25 +39,38 @@ function AnimatedNum({ value, prefix = '', suffix = '' }) {
 /* ── Sparkline ──────────────────────────────────────────── */
 const sparkData = Array.from({ length: 12 }, (_, i) => ({ v: 40 + i * 5 + Math.random() * 10 }));
 
-/* ── Marker factory ─────────────────────────────────────── */
-function createDotIcon(health) {
-  const cls = health >= 80 ? 'healthy' : health >= 50 ? 'warning' : 'critical';
-  return L.divIcon({
-    className: '',
-    html: `<div class="map-marker ${cls}"></div>`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
-  });
-}
+// Charts data processing will happen inside the component
 
 export default function Dashboard() {
   const { theme } = useTheme();
   const { data: twin, loading } = useApi(fetchDigitalTwinState, MOCK.digitalTwinState, 4000);
-  const { data: trackMap } = useApi(fetchTrackMapData, MOCK.trackMapData, 8000);
 
   if (loading || !twin) return <div className="spinner-wrap"><div className="spinner" /><div className="spinner-text">Initializing command center...</div></div>;
 
   const rakes = twin.rakes || [];
+  
+  // Chart Data
+  const healthData = {
+    Healthy: rakes.filter(r => r.health_score >= 80).length,
+    Warning: rakes.filter(r => r.health_score >= 50 && r.health_score < 80).length,
+    Critical: rakes.filter(r => r.health_score < 50).length
+  };
+  
+  const pieData = [
+    { name: 'Healthy', value: healthData.Healthy, color: STATUS_COLORS.healthy },
+    { name: 'Warning', value: healthData.Warning, color: STATUS_COLORS.warning },
+    { name: 'Critical', value: healthData.Critical, color: STATUS_COLORS.critical }
+  ].filter(d => d.value > 0);
+
+  const rakeTypes = rakes.reduce((acc, rake) => {
+    acc[rake.rake_type] = (acc[rake.rake_type] || 0) + 1;
+    return acc;
+  }, {});
+  
+  const barData = Object.entries(rakeTypes).map(([type, count]) => ({
+    name: type, count
+  }));
+
   const events = (twin.recent_events || []).filter(e => e.severity === 'critical' || e.severity === 'warning');
   const sus = twin.sustainability || {};
   const avgHealth = rakes.length ? Math.round(rakes.reduce((s, r) => s + r.health_score, 0) / rakes.length) : 0;
@@ -109,40 +122,75 @@ export default function Dashboard() {
 
       {/* Bento: Map 70% | Triage 30% */}
       <div className="bento">
-        {/* Live Map */}
+        {/* Fleet Analytics */}
         <motion.div
           className="g-card"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          style={{ padding: 0, overflow: 'hidden' }}
+          style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
         >
-          <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
-            <div className="g-card-title">🗺️ Live Network Map</div>
+          <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="g-card-title">📊 Fleet Analytics</div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <a 
+                href="http://localhost:8000/api/reports/download/docx" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn btn-sm" 
+                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, background: 'transparent', border: '1px solid var(--neon)', color: 'var(--neon)', boxShadow: '0 0 8px rgba(74, 222, 128, 0.3)', fontWeight: 600, textDecoration: 'none' }}
+              >
+                <FileText size={14} /> Download DOCX
+              </a>
+              <a 
+                href="http://localhost:8000/api/reports/download/pptx" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn btn-sm" 
+                style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, background: 'transparent', border: '1px solid var(--cyan)', color: 'var(--cyan)', boxShadow: '0 0 8px rgba(6, 182, 212, 0.3)', fontWeight: 600, textDecoration: 'none' }}
+              >
+                <Presentation size={14} /> Download PPTX
+              </a>
+            </div>
           </div>
-          <div className="map-wrap">
-            <MapContainer center={[23.5, 78.5]} zoom={5} style={{ width: '100%', height: '100%' }} zoomControl={true}>
-              <TileLayer
-                url={`https://{s}.basemaps.cartocdn.com/${theme === 'dark' ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`}
-                attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-              />
-              {rakes.filter(r => r.lat && r.lng).map((rake) => (
-                <Marker
-                  key={rake.rake_id}
-                  position={[rake.lat, rake.lng]}
-                  icon={createDotIcon(rake.health_score)}
-                >
-                  <LeafletTooltip direction="top" offset={[0, -8]} opacity={0.95}>
-                    <div style={{ fontFamily: 'Inter', fontSize: 11 }}>
-                      <strong>{rake.rake_id}</strong> • {rake.rake_type}<br />
-                      Health: {rake.health_score}% • {rake.location}<br />
-                      Speed: {Math.round(40 + Math.random() * 40)} km/h
-                    </div>
-                  </LeafletTooltip>
-                </Marker>
-              ))}
-            </MapContainer>
+          <div style={{ flex: 1, display: 'flex', padding: 24, gap: 32 }}>
+            
+            <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+              <h4 style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, textAlign: 'center' }}>Health Distribution</h4>
+              <div style={{ flex: 1, minHeight: 250 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} innerRadius={60} paddingAngle={5}>
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 8 }} />
+                    <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div style={{ width: 1, background: 'var(--border)', opacity: 0.5 }} />
+
+            <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+              <h4 style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, textAlign: 'center' }}>Rake Type Breakdown</h4>
+              <div style={{ flex: 1, minHeight: 250 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--text-muted)' }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--text-muted)' }} />
+                    <Tooltip cursor={{ fill: 'var(--bg-card-hover)' }} contentStyle={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }} />
+                    <Bar dataKey="count" fill="var(--accent)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
           </div>
+          
         </motion.div>
 
         {/* Active Triage Feed */}

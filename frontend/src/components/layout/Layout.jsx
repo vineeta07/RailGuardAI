@@ -8,7 +8,7 @@ import { useDemoMode } from '../../hooks/useDemoMode';
 import { useAuth } from '../../hooks/useAuth';
 
 const pageTitles = {
-  '/app':              'Overview',
+  '/app':              'Dashboard',
   '/app/network-map':  'Network Map',
   '/app/fleet-triage': 'Fleet Triage',
   '/app/reallocation': 'AI Reallocation',
