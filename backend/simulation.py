@@ -32,7 +32,7 @@ sustainability = {
     "start_time": datetime.now().isoformat(),
 }
 
-# ── Recent Events Log ──────────────────────────────────────
+# Recent Events Log 
 
 recent_events = []
 MAX_EVENTS = 100
@@ -54,7 +54,7 @@ def add_event(event_type, message, severity="info", data=None):
     return event
 
 
-# ── Simulation Tick Functions ──────────────────────────────
+# Simulation Tick Functions 
 
 def tick_rake_positions():
     """Move rakes slightly to simulate movement."""
@@ -169,7 +169,7 @@ def tick_forward_vision():
         )
 
 
-# ── Main Simulation Loop ──────────────────────────────────
+# Main Simulation Loop
 
 _simulation_running = False
 _simulation_thread = None
